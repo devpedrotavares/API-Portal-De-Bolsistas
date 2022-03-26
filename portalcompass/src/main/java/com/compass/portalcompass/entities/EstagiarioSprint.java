@@ -9,9 +9,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class EstagiarioSprint {
 	@EmbeddedId
 	private EstagiarioSprintId id = new EstagiarioSprintId();
