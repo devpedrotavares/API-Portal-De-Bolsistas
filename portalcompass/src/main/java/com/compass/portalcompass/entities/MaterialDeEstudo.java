@@ -1,24 +1,20 @@
 package com.compass.portalcompass.entities;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 
 import lombok.Data;
 
 @Data
 @Entity
-public class Sprint {
+public class MaterialDeEstudo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private LocalDate dataDeInicio;
-	private LocalDate dataDeTermino;
-	@OneToMany(mappedBy="sprint")
-	private List<Tema> temas;
+	private String url;
+	@ManyToOne
+	private Tema tema;
 }
