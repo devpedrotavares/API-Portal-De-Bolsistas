@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
 import com.compass.portalcompass.entities.Estagiario;
+import com.compass.portalcompass.exception.NaoEncontradoExcecao;
 import com.compass.portalcompass.repositories.EstagiarioRepositorio;
 
 @Service
@@ -23,6 +24,13 @@ public class EstagiarioServiceImp implements EstagiarioService {
 	@Override
 	public EstagiarioDTO insert(EstagiarioFormDTO estagiarioBody) {
 		Estagiario estagiario = repositorio.save(mapper.map(estagiarioBody, Estagiario.class));
+		return mapper.map(estagiario, EstagiarioDTO.class);
+	}
+
+	@Override
+	public EstagiarioDTO findById(Long id) {
+		Estagiario estagiario = repositorio.findById(id)
+				.orElseThrow(() -> new NaoEncontradoExcecao(id));
 		return mapper.map(estagiario, EstagiarioDTO.class);
 	}
 	

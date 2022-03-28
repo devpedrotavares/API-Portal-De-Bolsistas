@@ -7,4 +7,5 @@ public interface EstagiarioService {
 
 	EstagiarioDTO insert(EstagiarioFormDTO estagiarioBody);
 
+	EstagiarioDTO findById(Long id);
 }
