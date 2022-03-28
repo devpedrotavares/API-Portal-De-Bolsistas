@@ -10,6 +10,6 @@ public interface EstagiarioService {
 
 	EstagiarioDTO insert(EstagiarioFormDTO estagiarioBody);
 
-	Page<EstagiarioDTO> findAll(Pageable pageable);
+	Page<EstagiarioDTO> findAll(int size, int page, String sort);
 
 }

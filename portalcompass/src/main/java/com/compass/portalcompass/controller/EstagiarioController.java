@@ -26,8 +26,10 @@ public class EstagiarioController {
 	private EstagiarioService service;
 	
 	@GetMapping
-	public Page<EstagiarioDTO> findAll(@RequestParam(required = false) Pageable pageable) {
-		return service.findAll(pageable);
+	public Page<EstagiarioDTO> findAll(@RequestParam(defaultValue = "10") int size, 
+			@RequestParam(defaultValue = "0") int page, 
+			@RequestParam(required = false) String sort) {
+		return service.findAll(size, page, sort);
 	}
 	
 	@PostMapping
