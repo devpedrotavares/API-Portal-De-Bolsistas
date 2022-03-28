@@ -48,4 +48,18 @@ public class EstagiarioServiceImp implements EstagiarioService {
 				.orElseThrow(() -> new NaoEncontradoExcecao(id));
 		return mapper.map(estagiario, EstagiarioDTO.class);
 	}
+
+	@Override
+	public EstagiarioDTO update(Long id, EstagiarioFormDTO form) {
+		Estagiario estagiario = repositorio.getById(id);
+		estagiario.setNome(form.getNome());
+		estagiario.setEmail(form.getEmail());
+		estagiario.setTipoBolsas(form.getTipoBolsas());
+		return mapper.map(estagiario, EstagiarioDTO.class);
+	}
+
+	@Override
+	public void delete(Long id) {
+		repositorio.deleteById(id);
+	}
 }
