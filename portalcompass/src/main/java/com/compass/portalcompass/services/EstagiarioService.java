@@ -12,4 +12,5 @@ public interface EstagiarioService {
 
 	Page<EstagiarioDTO> findAll(int size, int page, String sort);
 
+	EstagiarioDTO findById(Long id);
 }
