@@ -1,5 +1,7 @@
 package com.compass.portalcompass.controllers;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
+import com.compass.portalcompass.enums.TipoBolsa;
 import com.compass.portalcompass.services.EstagiarioService;
 
 @RestController
@@ -46,6 +49,11 @@ public class EstagiarioController {
 	public ResponseEntity<EstagiarioDTO> findById(@PathVariable Long id) {
 		EstagiarioDTO estagiario = service.findById(id);
 		return ResponseEntity.ok(estagiario);
+	}
+	
+	@GetMapping(value = "/tipoBolsa")
+	public List<EstagiarioDTO> findByTipoBolsa(@PathVariable TipoBolsa tipoBolsa) {
+		return service.findByTipoBolsa(tipoBolsa);
 	}
 	
 	@PutMapping(value = "/{id}")
