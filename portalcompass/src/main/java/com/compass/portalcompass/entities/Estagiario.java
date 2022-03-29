@@ -24,7 +24,7 @@ public class Estagiario {
 	private String nome;
 	private String email;
 	@Enumerated(EnumType.STRING)
-	private TipoBolsa tipoBolsas;
+	private TipoBolsa tipoBolsa;
 	@OneToMany(mappedBy = "estagiario")
 	private List<EstagiarioSprint> estagiarioSprints;
 }

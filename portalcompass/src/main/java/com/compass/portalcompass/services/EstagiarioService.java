@@ -1,10 +1,13 @@
 package com.compass.portalcompass.services;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 
 import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
+import com.compass.portalcompass.enums.TipoBolsa;
 
 public interface EstagiarioService {
 
@@ -17,4 +20,6 @@ public interface EstagiarioService {
 	EstagiarioDTO update(Long id, EstagiarioFormDTO estagiarioBody);
 
 	void delete(Long id);
+
+	Page<EstagiarioDTO> findByTipoBolsa(TipoBolsa tipoBolsa, int size, int page);
 }
