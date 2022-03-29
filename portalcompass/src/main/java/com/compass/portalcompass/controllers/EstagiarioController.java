@@ -1,6 +1,7 @@
-package com.compass.portalcompass.controller;
+package com.compass.portalcompass.controllers;
 
 import javax.transaction.Transactional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -53,10 +54,12 @@ public class EstagiarioController {
 		EstagiarioDTO estagiario = service.update(id, estagiarioBody);
 		return ResponseEntity.ok(estagiario);
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) {
+	@Transactional
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
+		return ResponseEntity.noContent().build();
+}	
+	
 }

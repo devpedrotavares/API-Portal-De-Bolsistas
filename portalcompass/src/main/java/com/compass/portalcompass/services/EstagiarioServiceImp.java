@@ -1,12 +1,13 @@
 package com.compass.portalcompass.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
+
+
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
 import com.compass.portalcompass.entities.Estagiario;
+import com.compass.portalcompass.exception.BancoDeDadosExcecao;
 import com.compass.portalcompass.exception.NaoEncontradoExcecao;
 import com.compass.portalcompass.repositories.EstagiarioRepositorio;
 
@@ -29,6 +31,10 @@ public class EstagiarioServiceImp implements EstagiarioService {
 
 	@Override
 	public EstagiarioDTO insert(EstagiarioFormDTO estagiarioBody) {
+		Optional<Estagiario> estagiarioID = repositorio.findById(estagiarioBody.getMatricula());
+		if (!estagiarioID.isEmpty()) {
+			throw new BancoDeDadosExcecao("Já existe a matricula = " + estagiarioBody.getMatricula());
+		}
 		Estagiario estagiario = repositorio.save(mapper.map(estagiarioBody, Estagiario.class));
 		return mapper.map(estagiario, EstagiarioDTO.class);
 	}
@@ -50,16 +56,28 @@ public class EstagiarioServiceImp implements EstagiarioService {
 	}
 
 	@Override
-	public EstagiarioDTO update(Long id, EstagiarioFormDTO form) {
-		Estagiario estagiario = repositorio.getById(id);
-		estagiario.setNome(form.getNome());
-		estagiario.setEmail(form.getEmail());
-		estagiario.setTipoBolsas(form.getTipoBolsas());
-		return mapper.map(estagiario, EstagiarioDTO.class);
+	public EstagiarioDTO update(Long id, EstagiarioFormDTO estagiarioBody) {
+		Estagiario estagiario = repositorio.findById(id)
+				.orElseThrow(() -> new NaoEncontradoExcecao(id));
+		estagiario.setNome(estagiarioBody.getNome());
+		estagiario.setEmail(estagiarioBody.getEmail());
+		estagiario.setTipoBolsas(estagiarioBody.getTipoBolsas());
+		estagiario.setEstagiarioSprints(estagiarioBody.getEstagiarioSprints());
+		Estagiario update = repositorio.save(estagiario);
+		return mapper.map(update, EstagiarioDTO.class);
 	}
+
 
 	@Override
 	public void delete(Long id) {
-		repositorio.deleteById(id);
+		try {
+			Estagiario estagiario = repositorio.findById(id)
+					.orElseThrow(() -> new NaoEncontradoExcecao(id));
+			repositorio.delete(estagiario);
+		} catch (EmptyResultDataAccessException e) {
+			throw new NaoEncontradoExcecao(id);
+		} catch (BancoDeDadosExcecao e) {
+			throw new BancoDeDadosExcecao(e.getMessage());
+		}
 	}
 }
