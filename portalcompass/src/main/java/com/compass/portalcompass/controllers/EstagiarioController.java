@@ -1,5 +1,7 @@
 package com.compass.portalcompass.controllers;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
+import com.compass.portalcompass.enums.TipoBolsa;
 import com.compass.portalcompass.services.EstagiarioService;
 
 @RestController
@@ -28,10 +31,14 @@ public class EstagiarioController {
 	@Autowired
 	private EstagiarioService service;
 	
+	//Retorna todos os estagiários. Obs.: tem parâmetro opcional para buscar pelo tipo da bolsa
 	@GetMapping
 	public Page<EstagiarioDTO> findAll(@RequestParam(defaultValue = "10") int size, 
 			@RequestParam(defaultValue = "0") int page, 
-			@RequestParam(required = false) String sort) {
+			@RequestParam(required = false) String sort,
+			@RequestParam(required = false) TipoBolsa tipoBolsa) {
+		if(tipoBolsa != null)
+			return service.findByTipoBolsa(tipoBolsa, size, page);
 		return service.findAll(size, page, sort);
 	}
 	
