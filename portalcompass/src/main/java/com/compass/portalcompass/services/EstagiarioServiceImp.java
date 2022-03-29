@@ -2,6 +2,7 @@ package com.compass.portalcompass.services;
 
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
 import com.compass.portalcompass.entities.Estagiario;
+import com.compass.portalcompass.enums.TipoBolsa;
 import com.compass.portalcompass.exception.BancoDeDadosExcecao;
 import com.compass.portalcompass.exception.NaoEncontradoExcecao;
 import com.compass.portalcompass.repositories.EstagiarioRepositorio;
@@ -49,6 +51,7 @@ public class EstagiarioServiceImp implements EstagiarioService {
 		return estagiariosPaginacao.map(e -> mapper.map(e, EstagiarioDTO.class));
 	}
 	
+	@Override
 	public EstagiarioDTO findById(Long id) {
 		Estagiario estagiario = repositorio.findById(id)
 				.orElseThrow(() -> new NaoEncontradoExcecao(id));
@@ -61,7 +64,7 @@ public class EstagiarioServiceImp implements EstagiarioService {
 				.orElseThrow(() -> new NaoEncontradoExcecao(id));
 		estagiario.setNome(estagiarioBody.getNome());
 		estagiario.setEmail(estagiarioBody.getEmail());
-		estagiario.setTipoBolsas(estagiarioBody.getTipoBolsas());
+		estagiario.setTipoBolsa(estagiarioBody.getTipoBolsa());
 		estagiario.setEstagiarioSprints(estagiarioBody.getEstagiarioSprints());
 		Estagiario update = repositorio.save(estagiario);
 		return mapper.map(update, EstagiarioDTO.class);
@@ -80,4 +83,12 @@ public class EstagiarioServiceImp implements EstagiarioService {
 			throw new BancoDeDadosExcecao(e.getMessage());
 		}
 	}
+
+	@Override
+	public Page<EstagiarioDTO> findByTipoBolsa(TipoBolsa tipoBolsa, int size, int page) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Estagiario> estagiarios = repositorio.findByTipoBolsa(tipoBolsa, pageable);
+		return estagiarios.map(e -> mapper.map(e, EstagiarioDTO.class));
+	}
+
 }
