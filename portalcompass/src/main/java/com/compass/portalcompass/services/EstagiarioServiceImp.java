@@ -29,7 +29,8 @@ public class EstagiarioServiceImp implements EstagiarioService {
 
 	@Override
 	public EstagiarioDTO insert(EstagiarioFormDTO estagiarioBody) {
-		Estagiario estagiario = repositorio.save(mapper.map(estagiarioBody, Estagiario.class));
+		Estagiario estagiario = mapper.map(estagiarioBody, Estagiario.class);
+		repositorio.save(estagiario);
 		return mapper.map(estagiario, EstagiarioDTO.class);
 	}
 
