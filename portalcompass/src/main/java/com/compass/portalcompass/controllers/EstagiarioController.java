@@ -31,10 +31,14 @@ public class EstagiarioController {
 	@Autowired
 	private EstagiarioService service;
 	
+	//Retorna todos os estagiários. Obs.: tem parâmetro opcional para buscar pelo tipo da bolsa
 	@GetMapping
 	public Page<EstagiarioDTO> findAll(@RequestParam(defaultValue = "10") int size, 
 			@RequestParam(defaultValue = "0") int page, 
-			@RequestParam(required = false) String sort) {
+			@RequestParam(required = false) String sort,
+			@RequestParam(required = false) TipoBolsa tipoBolsa) {
+		if(tipoBolsa != null)
+			return service.findByTipoBolsa(tipoBolsa, size, page);
 		return service.findAll(size, page, sort);
 	}
 	
@@ -49,11 +53,6 @@ public class EstagiarioController {
 	public ResponseEntity<EstagiarioDTO> findById(@PathVariable Long id) {
 		EstagiarioDTO estagiario = service.findById(id);
 		return ResponseEntity.ok(estagiario);
-	}
-	
-	@GetMapping(value = "/tipoBolsa")
-	public List<EstagiarioDTO> findByTipoBolsa(@PathVariable TipoBolsa tipoBolsa) {
-		return service.findByTipoBolsa(tipoBolsa);
 	}
 	
 	@PutMapping(value = "/{id}")

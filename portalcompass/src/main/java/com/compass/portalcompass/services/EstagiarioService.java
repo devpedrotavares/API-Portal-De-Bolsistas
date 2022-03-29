@@ -21,5 +21,5 @@ public interface EstagiarioService {
 
 	void delete(Long id);
 
-	List<EstagiarioDTO> findByTipoBolsa(TipoBolsa tipoBolsa);
+	Page<EstagiarioDTO> findByTipoBolsa(TipoBolsa tipoBolsa, int size, int page);
 }

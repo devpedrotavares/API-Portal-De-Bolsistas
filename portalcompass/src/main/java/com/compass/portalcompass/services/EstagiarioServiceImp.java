@@ -85,7 +85,10 @@ public class EstagiarioServiceImp implements EstagiarioService {
 	}
 
 	@Override
-	public List<EstagiarioDTO> findByTipoBolsa(TipoBolsa tipoBolsa) {
-		return repositorio.findByTipoBolsa(tipoBolsa);
+	public Page<EstagiarioDTO> findByTipoBolsa(TipoBolsa tipoBolsa, int size, int page) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Estagiario> estagiarios = repositorio.findByTipoBolsa(tipoBolsa, pageable);
+		return estagiarios.map(e -> mapper.map(e, EstagiarioDTO.class));
 	}
+
 }
