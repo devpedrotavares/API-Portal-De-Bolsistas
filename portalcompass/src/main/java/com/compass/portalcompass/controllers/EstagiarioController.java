@@ -55,11 +55,19 @@ public class EstagiarioController {
 		EstagiarioDTO estagiario = service.update(id, estagiarioBody);
 		return ResponseEntity.ok(estagiario);
 	}
+<<<<<<< HEAD:portalcompass/src/main/java/com/compass/portalcompass/controllers/EstagiarioController.java
 
 	@DeleteMapping(value = "/{id}")
 	@Transactional
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
+=======
+	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+		service.delete(id);
+		return new ResponseEntity<>(HttpStatus.OK);
+>>>>>>> 22f73fb82730c7100888e19f618b2d3268352e4b:portalcompass/src/main/java/com/compass/portalcompass/controller/EstagiarioController.java
 	}
 }
