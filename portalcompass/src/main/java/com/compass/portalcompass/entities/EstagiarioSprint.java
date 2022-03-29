@@ -15,11 +15,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 public class EstagiarioSprint {
+	
 	@EmbeddedId
 	private EstagiarioSprintId id = new EstagiarioSprintId();
+	
 	@ManyToOne
 	@MapsId("estagiarioId")
 	private Estagiario estagiario;
+	
 	@ManyToOne
 	@MapsId("sprintId")
 	private Sprint sprint;
