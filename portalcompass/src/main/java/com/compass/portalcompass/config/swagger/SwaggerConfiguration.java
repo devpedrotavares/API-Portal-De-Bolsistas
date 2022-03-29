@@ -36,6 +36,4 @@ public class SwaggerConfiguration {
 				.contact(new Contact("Repositório","https://github.com/Carlos-Shinra-Neto/Sprint-5-Api",""))
 				.build();
 	}
-	
 }
-

@@ -7,11 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.compass.portalcompass.exception.BancoDeDadosExcecao;
 import com.compass.portalcompass.exception.NaoEncontradoExcecao;
 
+@RestControllerAdvice
 public class ResourceExceptionHandler {
 	@ExceptionHandler(NaoEncontradoExcecao.class)
 	public ResponseEntity<StandardError> resourceNoutFound(NaoEncontradoExcecao e, HttpServletRequest request) {
