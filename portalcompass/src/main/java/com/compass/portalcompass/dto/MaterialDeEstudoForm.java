@@ -1,11 +1,9 @@
 package com.compass.portalcompass.dto;
 
-import java.util.List;
+
 
 import javax.validation.constraints.NotEmpty;
 
-import com.compass.portalcompass.entities.EstagiarioSprint;
-import com.compass.portalcompass.enums.TipoBolsa;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
