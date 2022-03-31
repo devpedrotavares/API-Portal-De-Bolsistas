@@ -3,6 +3,7 @@ package com.compass.portalcompass.services;
 
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
 import com.compass.portalcompass.dto.EstagiarioSprintDTO;
 import com.compass.portalcompass.dto.VinculoEstagiarioSprintForm;
-import com.compass.portalcompass.dto.VinculoNotasForm;
+import com.compass.portalcompass.dto.VinculoInfosForm;
 import com.compass.portalcompass.entities.Estagiario;
 import com.compass.portalcompass.entities.EstagiarioSprint;
 import com.compass.portalcompass.entities.EstagiarioSprintId;
@@ -122,20 +123,18 @@ public class EstagiarioServiceImp implements EstagiarioService {
 		return mapper.map(vinculo, EstagiarioSprintDTO.class);
 	}
 
+	//cadastra informações da relação estagiário-sprint
 	@Override
-	public void cadastrarNotas(Long idEstagiario, Long idSprint, VinculoNotasForm form) {
+	public void cadastrarInfos(Long idEstagiario, Long idSprint, VinculoInfosForm form) {
 		EstagiarioSprintId id = new EstagiarioSprintId(idEstagiario, idSprint);
 		EstagiarioSprint vinculo = vinculoRepositorio.getById(id);
 		vinculo.setNotaTecnica(form.getNotaTecnica());
 		vinculo.setNotaComportamental(form.getNotaComportamental());
-	}
-
-	@Override
-	public void cadastrarTema(Long idEstagiario, Long idSprint, Long idTema) {
-		EstagiarioSprintId id = new EstagiarioSprintId(idEstagiario, idSprint);
-		EstagiarioSprint vinculo = vinculoRepositorio.getById(id);
-		Tema tema = temaRepositorio.getById(idTema);
-		vinculo.getTemasReforco().add(tema);
+		
+		Set<Tema> temasReforco = vinculo.getTemasReforco();
+		form.getIdsTemasReforco().forEach(idTema -> {
+			temasReforco.add(temaRepositorio.getById(idTema));
+		});
 	}
 
 }

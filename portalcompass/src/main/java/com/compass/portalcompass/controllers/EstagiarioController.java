@@ -20,7 +20,7 @@ import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
 import com.compass.portalcompass.dto.EstagiarioSprintDTO;
 import com.compass.portalcompass.dto.VinculoEstagiarioSprintForm;
-import com.compass.portalcompass.dto.VinculoNotasForm;
+import com.compass.portalcompass.dto.VinculoInfosForm;
 import com.compass.portalcompass.enums.TipoBolsa;
 import com.compass.portalcompass.services.EstagiarioService;
 
@@ -62,21 +62,12 @@ public class EstagiarioController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(estagiario);
 	}
 
-	//registra as notas do estagiário naquela sprint (na entidade associativa).
-	@PostMapping(value = "/{idEstagiario}/sprint/{idSprint}/notas")
+	// registra as informações da relação estagiário-sprint
+	@PutMapping(value = "/{idEstagiario}/sprint/{idSprint}")
 	@Transactional
-	public ResponseEntity<Void> cadastraNotas(@PathVariable Long idEstagiario,
-			@PathVariable Long idSprint, @RequestBody VinculoNotasForm form) {
-		service.cadastrarNotas(idEstagiario, idSprint, form);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
-	//adiciona um tema de reforço à relação estagiário-sprint
-	@PostMapping(value = "/{idEstagiario}/sprint/{idSprint}/temaReforco")
-	@Transactional
-	public ResponseEntity<Void> adicinaTemaDeReforco(@PathVariable Long idEstagiario,
-			@PathVariable Long idSprint, @RequestBody Long idTema) {
-		service.cadastrarTema(idEstagiario, idSprint, idTema);
+	public ResponseEntity<Void> cadastraInfos(@PathVariable Long idEstagiario, @PathVariable Long idSprint,
+			@RequestBody VinculoInfosForm form) {
+		service.cadastrarInfos(idEstagiario, idSprint, form);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

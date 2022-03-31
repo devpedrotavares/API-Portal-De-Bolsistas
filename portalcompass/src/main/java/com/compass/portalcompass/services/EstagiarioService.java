@@ -6,7 +6,7 @@ import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
 import com.compass.portalcompass.dto.EstagiarioSprintDTO;
 import com.compass.portalcompass.dto.VinculoEstagiarioSprintForm;
-import com.compass.portalcompass.dto.VinculoNotasForm;
+import com.compass.portalcompass.dto.VinculoInfosForm;
 import com.compass.portalcompass.enums.TipoBolsa;
 
 public interface EstagiarioService {
@@ -27,7 +27,5 @@ public interface EstagiarioService {
 
 	EstagiarioSprintDTO getEstagiarioSprint(Long idEstagiario, Long idSprint);
 
-	void cadastrarNotas(Long idEstagiario, Long idSprint, VinculoNotasForm form);
-
-	void cadastrarTema(Long idEstagiario, Long idSprint, Long idTema);
+	void cadastrarInfos(Long idEstagiario, Long idSprint, VinculoInfosForm form);
 }

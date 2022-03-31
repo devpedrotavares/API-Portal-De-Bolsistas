@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 public class VinculoEstagiarioSprintForm {
 	private Long estagiarioId;
 	private Long sprintId;
-
 }
