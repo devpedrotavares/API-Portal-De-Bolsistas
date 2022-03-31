@@ -1,9 +1,11 @@
 package com.compass.portalcompass.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,7 +36,7 @@ public class Sprint {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate dataDeTermino;
 	
-	@OneToMany(mappedBy="sprint")
-	private List<Tema> temas;
+	@OneToMany(mappedBy="sprint", fetch = FetchType.LAZY)
+	private List<Tema> temas = new ArrayList<>();
 	
 }

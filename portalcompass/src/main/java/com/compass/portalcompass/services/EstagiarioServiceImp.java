@@ -64,7 +64,6 @@ public class EstagiarioServiceImp implements EstagiarioService {
 		estagiario.setNome(estagiarioBody.getNome());
 		estagiario.setEmail(estagiarioBody.getEmail());
 		estagiario.setTipoBolsa(estagiarioBody.getTipoBolsa());
-		estagiario.setEstagiarioSprints(estagiarioBody.getEstagiarioSprints());
 		Estagiario update = repositorio.save(estagiario);
 		return mapper.map(update, EstagiarioDTO.class);
 	}

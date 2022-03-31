@@ -2,6 +2,7 @@ package com.compass.portalcompass.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +19,7 @@ public class MaterialDeEstudo {
 	private Long id;
 	@Column(unique = true)
 	private String url;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tema_id")
 	private Tema tema;
 }

@@ -1,8 +1,10 @@
 package com.compass.portalcompass.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,6 +24,7 @@ public class Tema {
 	@ManyToOne
 	@JoinColumn(name = "sprint_id")
 	private Sprint sprint;
-	@OneToMany(mappedBy = "tema")
-	private List<MaterialDeEstudo> materiaisDeEstudo;
+	@OneToMany(mappedBy = "tema", fetch = FetchType.LAZY)
+	private List<MaterialDeEstudo> materiaisDeEstudo = new ArrayList<>();
+
 }

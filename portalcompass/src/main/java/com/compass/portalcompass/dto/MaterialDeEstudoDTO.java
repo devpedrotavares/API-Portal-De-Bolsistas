@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class MaterialDeEstudoDTO {
 	private Long id;
 	private String url;
-	private Tema tema;
+	private TemaDTO tema;
 }
