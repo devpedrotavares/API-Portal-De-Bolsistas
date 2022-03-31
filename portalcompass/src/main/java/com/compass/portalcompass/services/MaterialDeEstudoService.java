@@ -14,4 +14,10 @@ public interface MaterialDeEstudoService {
 
 	Page<MaterialDeEstudoDTO> findAll(int size, int page, String sort);
 
+	MaterialDeEstudoDTO findById(Long id);
+
+	MaterialDeEstudoDTO update(Long id, MaterialDeEstudoForm materialDeEstudoBody);
+
+	void delete(Long id);
+
 }
