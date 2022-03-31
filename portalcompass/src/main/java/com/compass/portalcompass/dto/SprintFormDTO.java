@@ -1,28 +1,22 @@
-package com.compass.portalcompass.entities;
+package com.compass.portalcompass.dto;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
+import com.compass.portalcompass.entities.Tema;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
+
 @Data
-@Entity
-public class Sprint {
+public class SprintFormDTO {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@NotEmpty(message = "Precisa preencher o campo")
 	private Long id;
 	
 	@NotBlank (message = "O campo precisa ser preenchido")
@@ -36,7 +30,7 @@ public class Sprint {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate dataDeTermino;
 	
-	@OneToMany(mappedBy="sprint", fetch = FetchType.LAZY)
-	private List<Tema> temas = new ArrayList<>();
+	@OneToMany(mappedBy="sprint")
+	private List<Tema> temas;
 	
 }
