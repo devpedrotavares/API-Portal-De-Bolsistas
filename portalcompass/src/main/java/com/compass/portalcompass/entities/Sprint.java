@@ -20,23 +20,14 @@ import lombok.Data;
 @Data
 @Entity
 public class Sprint {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@NotBlank (message = "O campo precisa ser preenchido")
 	private String nome;
-	
-	@NotEmpty (message = "O campo não pode ser nulo") 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate dataDeInicio;
-	
-	@NotEmpty (message = "O campo não pode ser nulo")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate dataDeTermino;
-	
 	@OneToMany(mappedBy="sprint", fetch = FetchType.LAZY)
 	private List<Tema> temas = new ArrayList<>();
-	
 }
