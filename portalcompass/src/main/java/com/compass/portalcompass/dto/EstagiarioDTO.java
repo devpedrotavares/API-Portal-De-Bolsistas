@@ -17,5 +17,4 @@ public class EstagiarioDTO {
 	private String nome;
 	private String email;
 	private TipoBolsa tipoBolsa;
-	private List<EstagiarioSprint> estagiarioSprints;
 }

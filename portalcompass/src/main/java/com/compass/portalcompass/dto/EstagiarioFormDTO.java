@@ -25,5 +25,4 @@ public class EstagiarioFormDTO {
 	private String email;
 	@NotNull(message = "Precisa preencher com o tipo da bolsa")
 	private TipoBolsa tipoBolsa;
-	private List<EstagiarioSprint> estagiarioSprints;
 }
