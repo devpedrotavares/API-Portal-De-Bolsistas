@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 public class TemaDTO {
 	private Long id;
 	private String nome;
-	private SprintDTO sprint;
+	private Sprint sprint;
 }
