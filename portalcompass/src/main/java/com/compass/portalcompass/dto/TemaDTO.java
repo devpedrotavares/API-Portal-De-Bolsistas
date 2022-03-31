@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class TemaDTO {
-	
 	private Long id;
 	private String nome;
 	private Sprint sprint;
-	private List<MaterialDeEstudo> materiaisDeEstudo;
 }
