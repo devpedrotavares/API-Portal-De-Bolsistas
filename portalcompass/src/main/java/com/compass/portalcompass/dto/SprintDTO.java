@@ -10,7 +10,6 @@ import lombok.Data;
 
 @Data
 public class SprintDTO {
-
 	private Long id;
 	private String nome;
 	@JsonFormat(pattern = "dd/MM/yyyy")
@@ -18,6 +17,5 @@ public class SprintDTO {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataDeTermino;
 	private List<Tema> temas;
-	
 }
 
