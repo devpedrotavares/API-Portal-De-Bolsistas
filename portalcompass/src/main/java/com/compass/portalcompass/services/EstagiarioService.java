@@ -4,6 +4,9 @@ import org.springframework.data.domain.Page;
 
 import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
+import com.compass.portalcompass.dto.EstagiarioSprintDTO;
+import com.compass.portalcompass.dto.VinculoEstagiarioSprintForm;
+import com.compass.portalcompass.dto.VinculoInfosForm;
 import com.compass.portalcompass.enums.TipoBolsa;
 
 public interface EstagiarioService {
@@ -19,4 +22,10 @@ public interface EstagiarioService {
 	void delete(Long id);
 
 	Page<EstagiarioDTO> findByTipoBolsa(TipoBolsa tipoBolsa, int size, int page);
+
+	void vincularASprint(VinculoEstagiarioSprintForm form);
+
+	EstagiarioSprintDTO getEstagiarioSprint(Long idEstagiario, Long idSprint);
+
+	void cadastrarInfos(Long idEstagiario, Long idSprint, VinculoInfosForm form);
 }

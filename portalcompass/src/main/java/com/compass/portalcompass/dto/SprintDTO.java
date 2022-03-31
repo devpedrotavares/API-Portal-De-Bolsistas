@@ -16,6 +16,5 @@ public class SprintDTO {
 	private LocalDate dataDeInicio;
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataDeTermino;
-	private List<Tema> temas;
 }
 
