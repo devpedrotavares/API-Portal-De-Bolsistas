@@ -20,7 +20,7 @@ import lombok.Data;
 public class Sprint {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@NotBlank (message = "O campo precisa ser preenchido")
@@ -36,5 +36,11 @@ public class Sprint {
 	
 	@OneToMany(mappedBy="sprint")
 	private List<Tema> temas;
+	
+	public void addTemas(Tema obj) {
+		temas.add(obj);
+	}
+	
+
 	
 }

@@ -1,5 +1,8 @@
 package com.compass.portalcompass.services;
 
+import java.util.Optional;
+
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -11,9 +14,11 @@ import org.springframework.stereotype.Service;
 
 import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.dto.TemaFormDTO;
+import com.compass.portalcompass.entities.Sprint;
 import com.compass.portalcompass.entities.Tema;
 import com.compass.portalcompass.exception.BancoDeDadosExcecao;
 import com.compass.portalcompass.exception.NaoEncontradoExcecao;
+import com.compass.portalcompass.repositories.SprintRepositorio;
 import com.compass.portalcompass.repositories.TemaRepositorio;
 
 @Service
@@ -23,11 +28,25 @@ public class TemaServiceImp implements TemaService {
 	private TemaRepositorio repositorio;
 	
 	@Autowired
+	private SprintRepositorio sprintRepositorio;
+	
+	@Autowired
 	private ModelMapper mapper;
 	
 	@Override
 	public TemaDTO insert(TemaFormDTO temaBody) {
-		Tema tema = repositorio.save(mapper.map(temaBody, Tema.class));
+		Optional<Tema> temaId = repositorio.findById(temaBody.getId());
+		if (!temaId.isEmpty()) {
+			throw new BancoDeDadosExcecao("Já existe a matricula = " + temaBody.getId());
+		}
+		Optional<Sprint> sprint = sprintRepositorio.findById(temaBody.getSprint().getId());
+		sprint.orElseThrow(() -> new NaoEncontradoExcecao(temaBody.getSprint().getId()));	
+		Tema tema = mapper.map(temaBody, Tema.class);
+		Sprint sprintGet = sprint.get();
+		tema.setSprint(sprintGet);
+		Tema temaSaved = repositorio.save(mapper.map(temaBody, Tema.class));
+		sprintGet.addTemas(temaSaved);
+		sprintGet = sprintRepositorio.save(sprintGet);
 		return mapper.map(tema, TemaDTO.class);
 	}
 

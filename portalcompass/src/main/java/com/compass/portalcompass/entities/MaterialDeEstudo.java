@@ -1,5 +1,7 @@
 package com.compass.portalcompass.entities;
 
+
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,4 +23,5 @@ public class MaterialDeEstudo {
 	@ManyToOne
 	@JoinColumn(name = "tema_id")
 	private Tema tema;
+
 }

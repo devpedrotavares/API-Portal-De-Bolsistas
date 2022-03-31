@@ -1,6 +1,9 @@
 package com.compass.portalcompass.entities;
 
+import java.util.ArrayList;
 import java.util.List;
+
+
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -21,7 +26,8 @@ public class Tema {
 	private String nome;
 	@ManyToOne
 	@JoinColumn(name = "sprint_id")
+	@JsonIgnore
 	private Sprint sprint;
-	@OneToMany(mappedBy = "tema")
-	private List<MaterialDeEstudo> materiaisDeEstudo;
+	@OneToMany(mappedBy = "tema") 
+	private List<MaterialDeEstudo> materiaisDeEstudo = new ArrayList<>();	
 }

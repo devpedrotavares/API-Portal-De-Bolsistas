@@ -2,6 +2,7 @@ package com.compass.portalcompass.dto;
 
 import java.util.List;
 
+
 import com.compass.portalcompass.entities.MaterialDeEstudo;
 import com.compass.portalcompass.entities.Sprint;
 
@@ -16,4 +17,6 @@ public class TemaDTO {
 	private String nome;
 	private Sprint sprint;
 	private List<MaterialDeEstudo> materiaisDeEstudo;
+	private Long idSprint;
+	
 }
