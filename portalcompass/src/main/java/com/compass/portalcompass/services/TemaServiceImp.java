@@ -1,5 +1,8 @@
 package com.compass.portalcompass.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -9,10 +12,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.compass.portalcompass.dto.MaterialDeEstudoDTO;
 import com.compass.portalcompass.dto.SprintDTO;
 import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.dto.TemaFormDTO;
 import com.compass.portalcompass.dto.VinculoTemaSprintForm;
+import com.compass.portalcompass.entities.MaterialDeEstudo;
 import com.compass.portalcompass.entities.Sprint;
 import com.compass.portalcompass.entities.Tema;
 import com.compass.portalcompass.exception.BancoDeDadosExcecao;
@@ -94,6 +99,14 @@ public class TemaServiceImp implements TemaService {
 				.orElseThrow(() -> new NaoEncontradoExcecao(id));
 		Sprint sprint = sprintReposiorio.findByTemas(tema);
 		return mapper.map(sprint, SprintDTO.class);
+	}
+
+	@Override
+	public List<MaterialDeEstudoDTO> findMateriaisByIdTema(Long id) {
+		Tema tema = repositorio.findById(id)
+				.orElseThrow(() -> new NaoEncontradoExcecao(id));
+		List<MaterialDeEstudo> lista = tema.getMateriaisDeEstudo();
+		return lista.stream().map(mat -> mapper.map(mat, MaterialDeEstudoDTO.class)).collect(Collectors.toList());
 	}
 
 }

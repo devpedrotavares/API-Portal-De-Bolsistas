@@ -2,11 +2,14 @@ package com.compass.portalcompass.services;
 
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.compass.portalcompass.dto.SprintDTO;
 import com.compass.portalcompass.dto.SprintFormDTO;
+import com.compass.portalcompass.dto.TemaDTO;
 
 
 public interface SprintService {
@@ -22,6 +25,8 @@ public interface SprintService {
     void delete(Long id);
 
 	Page<SprintDTO> findAll(Pageable page);
+
+	List<TemaDTO> getTemas(Long id);
 	
 
 }

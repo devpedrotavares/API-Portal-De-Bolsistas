@@ -1,7 +1,7 @@
 package com.compass.portalcompass.services;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.compass.portalcompass.dto.SprintDTO;
 import com.compass.portalcompass.dto.SprintFormDTO;
+import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.entities.Sprint;
 import com.compass.portalcompass.exception.BancoDeDadosExcecao;
 import com.compass.portalcompass.exception.NaoEncontradoExcecao;
@@ -95,6 +96,15 @@ public  class SprintServiceImp implements SprintService {
 	public Page<SprintDTO> findAll(Pageable page) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<TemaDTO> getTemas(Long id) {
+		Sprint sprint = repositorio.findById(id)
+				.orElseThrow(() -> new NaoEncontradoExcecao(id));
+		return sprint.getTemas().stream()
+				.map(t -> mapper.map(t, TemaDTO.class))
+				.collect(Collectors.toList());
 	}
 	
 	

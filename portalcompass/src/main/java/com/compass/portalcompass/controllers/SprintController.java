@@ -1,7 +1,8 @@
 package com.compass.portalcompass.controllers;
 
-import javax.transaction.Transactional;
+import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.compass.portalcompass.dto.SprintDTO;
 import com.compass.portalcompass.dto.SprintFormDTO;
+import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.services.SprintService;
 
 
@@ -41,6 +43,11 @@ public class SprintController {
 		public ResponseEntity<SprintDTO> findById(@PathVariable Long id) {
 			SprintDTO sprint = service.findById(id);
 			return ResponseEntity.ok(sprint);
+	    }
+	    
+	    @GetMapping(value = "/{id}/temas")
+	    public List<TemaDTO> getTemas(@PathVariable Long id){
+	    	return service.getTemas(id);
 	    }
 	    
 	    @PutMapping(value = "/{id}")
