@@ -1,13 +1,12 @@
 package com.compass.portalcompass.dto;
 
-import java.util.List;
+
 
 
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.compass.portalcompass.entities.EstagiarioSprint;
 import com.compass.portalcompass.enums.TipoBolsa;
 
 import lombok.Data;
@@ -25,5 +24,4 @@ public class EstagiarioFormDTO {
 	private String email;
 	@NotNull(message = "Precisa preencher com o tipo da bolsa")
 	private TipoBolsa tipoBolsa;
-	private List<EstagiarioSprint> estagiarioSprints;
 }

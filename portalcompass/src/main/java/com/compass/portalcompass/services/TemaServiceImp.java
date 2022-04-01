@@ -1,8 +1,5 @@
 package com.compass.portalcompass.services;
 
-import java.util.Optional;
-
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.dto.TemaFormDTO;
+import com.compass.portalcompass.dto.VinculoTemaSprintForm;
 import com.compass.portalcompass.entities.Sprint;
 import com.compass.portalcompass.entities.Tema;
 import com.compass.portalcompass.exception.BancoDeDadosExcecao;
@@ -28,25 +26,14 @@ public class TemaServiceImp implements TemaService {
 	private TemaRepositorio repositorio;
 	
 	@Autowired
-	private SprintRepositorio sprintRepositorio;
+	private SprintRepositorio sprintReposiorio;
 	
 	@Autowired
 	private ModelMapper mapper;
 	
 	@Override
 	public TemaDTO insert(TemaFormDTO temaBody) {
-		Optional<Tema> temaId = repositorio.findById(temaBody.getId());
-		if (!temaId.isEmpty()) {
-			throw new BancoDeDadosExcecao("Já existe a matricula = " + temaBody.getId());
-		}
-		Optional<Sprint> sprint = sprintRepositorio.findById(temaBody.getSprint().getId());
-		sprint.orElseThrow(() -> new NaoEncontradoExcecao(temaBody.getSprint().getId()));	
-		Tema tema = mapper.map(temaBody, Tema.class);
-		Sprint sprintGet = sprint.get();
-		tema.setSprint(sprintGet);
-		Tema temaSaved = repositorio.save(mapper.map(temaBody, Tema.class));
-		sprintGet.addTemas(temaSaved);
-		sprintGet = sprintRepositorio.save(sprintGet);
+		Tema tema = repositorio.save(mapper.map(temaBody, Tema.class));
 		return mapper.map(tema, TemaDTO.class);
 	}
 
@@ -87,6 +74,17 @@ public class TemaServiceImp implements TemaService {
 		} catch (BancoDeDadosExcecao e) {
 			throw new BancoDeDadosExcecao(e.getMessage());
 		}
+	}
+
+	@Override
+	public void vincularSprint(VinculoTemaSprintForm form) {
+		Tema tema = repositorio.findById(form.getTemaId())
+				.orElseThrow(() -> new NaoEncontradoExcecao(form.getTemaId()));
+		Sprint sprint = sprintReposiorio.findById(form.getSprintId())
+				.orElseThrow(() -> new NaoEncontradoExcecao(form.getTemaId()));
+	
+		tema.setSprint(sprint);;
+		sprint.getTemas().add(tema);
 	}
 
 }

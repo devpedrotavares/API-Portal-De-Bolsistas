@@ -3,6 +3,7 @@ package com.compass.portalcompass.controllers;
 import javax.transaction.Transactional;
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.dto.TemaFormDTO;
+import com.compass.portalcompass.dto.VinculoTemaSprintForm;
 import com.compass.portalcompass.services.TemaService;
 
 @RestController
@@ -54,6 +56,14 @@ public class TemaController {
 		TemaDTO tema = service.update(id, temaBody);
 		return ResponseEntity.ok(tema);
 	}
+	
+	//vincula o material de estudo ao tema
+		@PutMapping(value = "/sprint")
+		@Transactional
+		public ResponseEntity<?> vincularASprint(@RequestBody VinculoTemaSprintForm form){
+			service.vincularSprint(form);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
 	
 	@DeleteMapping(value = "/{id}")
 	@Transactional

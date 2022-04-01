@@ -3,6 +3,7 @@ package com.compass.portalcompass.services;
 
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +16,32 @@ import org.springframework.stereotype.Service;
 
 import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
+import com.compass.portalcompass.dto.EstagiarioSprintDTO;
+import com.compass.portalcompass.dto.VinculoEstagiarioSprintForm;
+import com.compass.portalcompass.dto.VinculoInfosForm;
 import com.compass.portalcompass.entities.Estagiario;
+import com.compass.portalcompass.entities.EstagiarioSprint;
+import com.compass.portalcompass.entities.EstagiarioSprintId;
+import com.compass.portalcompass.entities.Sprint;
+import com.compass.portalcompass.entities.Tema;
 import com.compass.portalcompass.enums.TipoBolsa;
 import com.compass.portalcompass.exception.BancoDeDadosExcecao;
 import com.compass.portalcompass.exception.NaoEncontradoExcecao;
 import com.compass.portalcompass.repositories.EstagiarioRepositorio;
+import com.compass.portalcompass.repositories.EstagiarioSprintRepositorio;
+import com.compass.portalcompass.repositories.SprintRepositorio;
+import com.compass.portalcompass.repositories.TemaRepositorio;
 
 @Service
 public class EstagiarioServiceImp implements EstagiarioService {
 
 	@Autowired
 	private EstagiarioRepositorio repositorio;
+	@Autowired 
+	private EstagiarioSprintRepositorio vinculoRepositorio;
+	@Autowired
+	private SprintRepositorio sprintRepositorio;
+	@Autowired TemaRepositorio temaRepositorio;
 	
 	@Autowired 
 	private ModelMapper mapper;
@@ -64,9 +80,20 @@ public class EstagiarioServiceImp implements EstagiarioService {
 		estagiario.setNome(estagiarioBody.getNome());
 		estagiario.setEmail(estagiarioBody.getEmail());
 		estagiario.setTipoBolsa(estagiarioBody.getTipoBolsa());
-		estagiario.setEstagiarioSprints(estagiarioBody.getEstagiarioSprints());
 		Estagiario update = repositorio.save(estagiario);
 		return mapper.map(update, EstagiarioDTO.class);
+	}
+	
+	@Override
+	public void vincularASprint(VinculoEstagiarioSprintForm form) {
+		EstagiarioSprint vinculo = new EstagiarioSprint();
+		Estagiario estagiario = repositorio.getById(form.getEstagiarioId());
+		Sprint sprint = sprintRepositorio.getById(form.getSprintId());
+		
+		vinculo.setEstagiario(estagiario);
+		vinculo.setSprint(sprint);
+		
+		vinculoRepositorio.save(vinculo);
 	}
 
 	@Override
@@ -87,6 +114,27 @@ public class EstagiarioServiceImp implements EstagiarioService {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<Estagiario> estagiarios = repositorio.findByTipoBolsa(tipoBolsa, pageable);
 		return estagiarios.map(e -> mapper.map(e, EstagiarioDTO.class));
+	}
+
+	@Override
+	public EstagiarioSprintDTO getEstagiarioSprint(Long idEstagiario, Long idSprint) {
+		EstagiarioSprintId id = new EstagiarioSprintId(idEstagiario, idSprint);
+		EstagiarioSprint vinculo = vinculoRepositorio.getById(id);
+		return mapper.map(vinculo, EstagiarioSprintDTO.class);
+	}
+
+	//cadastra informações da relação estagiário-sprint
+	@Override
+	public void cadastrarInfos(Long idEstagiario, Long idSprint, VinculoInfosForm form) {
+		EstagiarioSprintId id = new EstagiarioSprintId(idEstagiario, idSprint);
+		EstagiarioSprint vinculo = vinculoRepositorio.getById(id);
+		vinculo.setNotaTecnica(form.getNotaTecnica());
+		vinculo.setNotaComportamental(form.getNotaComportamental());
+		
+		Set<Tema> temasReforco = vinculo.getTemasReforco();
+		form.getIdsTemasReforco().forEach(idTema -> {
+			temasReforco.add(temaRepositorio.getById(idTema));
+		});
 	}
 
 }
