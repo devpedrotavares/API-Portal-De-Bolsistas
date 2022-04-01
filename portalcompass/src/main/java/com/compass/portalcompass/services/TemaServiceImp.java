@@ -11,9 +11,12 @@ import org.springframework.stereotype.Service;
 
 import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.dto.TemaFormDTO;
+import com.compass.portalcompass.dto.VinculoTemaSprintForm;
+import com.compass.portalcompass.entities.Sprint;
 import com.compass.portalcompass.entities.Tema;
 import com.compass.portalcompass.exception.BancoDeDadosExcecao;
 import com.compass.portalcompass.exception.NaoEncontradoExcecao;
+import com.compass.portalcompass.repositories.SprintRepositorio;
 import com.compass.portalcompass.repositories.TemaRepositorio;
 
 @Service
@@ -21,6 +24,9 @@ public class TemaServiceImp implements TemaService {
 
 	@Autowired
 	private TemaRepositorio repositorio;
+	
+	@Autowired
+	private SprintRepositorio sprintReposiorio;
 	
 	@Autowired
 	private ModelMapper mapper;
@@ -68,6 +74,17 @@ public class TemaServiceImp implements TemaService {
 		} catch (BancoDeDadosExcecao e) {
 			throw new BancoDeDadosExcecao(e.getMessage());
 		}
+	}
+
+	@Override
+	public void vincularSprint(VinculoTemaSprintForm form) {
+		Tema tema = repositorio.findById(form.getTemaId())
+				.orElseThrow(() -> new NaoEncontradoExcecao(form.getTemaId()));
+		Sprint sprint = sprintReposiorio.findById(form.getSprintId())
+				.orElseThrow(() -> new NaoEncontradoExcecao(form.getTemaId()));
+	
+		tema.setSprint(sprint);;
+		sprint.getTemas().add(tema);
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.compass.portalcompass.entities;
 
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -21,7 +20,7 @@ import lombok.Data;
 @Entity
 public class Sprint {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
@@ -30,4 +29,9 @@ public class Sprint {
 	private LocalDate dataDeTermino;
 	@OneToMany(mappedBy="sprint", fetch = FetchType.LAZY)
 	private List<Tema> temas = new ArrayList<>();
+	
+	public void addTemas(Tema obj) {
+		temas.add(obj);
+	}
+
 }

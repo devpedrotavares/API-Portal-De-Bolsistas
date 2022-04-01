@@ -1,9 +1,8 @@
 package com.compass.portalcompass.dto;
 
 import java.time.LocalDate;
-import java.util.List;
 
-import com.compass.portalcompass.entities.Tema;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;

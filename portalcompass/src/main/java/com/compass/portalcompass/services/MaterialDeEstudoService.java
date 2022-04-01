@@ -22,5 +22,4 @@ public interface MaterialDeEstudoService {
 	void delete(Long id);
 
 	void vincularATema(VinculoMaterialTemaForm form);
-
 }

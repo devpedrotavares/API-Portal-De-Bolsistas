@@ -2,6 +2,7 @@ package com.compass.portalcompass.services;
 
 import java.util.Optional;
 
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.compass.portalcompass.dto.MaterialDeEstudoDTO;
 import com.compass.portalcompass.dto.MaterialDeEstudoForm;
-import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.dto.VinculoMaterialTemaForm;
 import com.compass.portalcompass.entities.MaterialDeEstudo;
 import com.compass.portalcompass.entities.Tema;

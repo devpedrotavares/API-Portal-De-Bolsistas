@@ -1,5 +1,7 @@
 package com.compass.portalcompass.entities;
 
+
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,4 +24,5 @@ public class MaterialDeEstudo {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tema_id")
 	private Tema tema;
+
 }

@@ -2,7 +2,7 @@ package com.compass.portalcompass.dto;
 
 
 
-import com.compass.portalcompass.entities.Tema;
+
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -13,7 +13,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class TemaFormDTO {
-	
+
+	private Long id;
 	@NotEmpty(message = "Precisa preencher o nome")
 	private String nome;
+	private Sprint sprint;
+	private List<MaterialDeEstudo> materiaisDeEstudo;
 }
