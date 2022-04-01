@@ -1,10 +1,5 @@
 package com.compass.portalcompass.dto;
 
-
-
-
-
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

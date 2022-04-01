@@ -9,6 +9,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
 
 import com.compass.portalcompass.enums.TipoBolsa;
 
@@ -22,6 +23,7 @@ public class Estagiario {
 	@Id
 	private Long matricula;
 	private String nome;
+	@Email
 	private String email;
 	@Enumerated(EnumType.STRING)
 	private TipoBolsa tipoBolsa;

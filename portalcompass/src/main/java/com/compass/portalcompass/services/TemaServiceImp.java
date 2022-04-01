@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.compass.portalcompass.dto.SprintDTO;
 import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.dto.TemaFormDTO;
 import com.compass.portalcompass.dto.VinculoTemaSprintForm;
@@ -88,12 +87,5 @@ public class TemaServiceImp implements TemaService {
 		sprint.getTemas().add(tema);
 	}
 
-	@Override
-	public SprintDTO findSprintByIdTema(Long id) {
-		Tema tema = repositorio.findById(id)
-				.orElseThrow(() -> new NaoEncontradoExcecao(id));
-		Sprint sprint = sprintReposiorio.findByTemas(tema);
-		return mapper.map(sprint, SprintDTO.class);
-	}
 
 }

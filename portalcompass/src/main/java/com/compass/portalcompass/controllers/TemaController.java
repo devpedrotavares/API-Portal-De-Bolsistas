@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.compass.portalcompass.dto.SprintDTO;
 import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.dto.TemaFormDTO;
 import com.compass.portalcompass.dto.VinculoTemaSprintForm;
@@ -46,12 +45,6 @@ public class TemaController {
 	public ResponseEntity<TemaDTO> findById(@PathVariable Long id) {
 		TemaDTO tema = service.findById(id);
 		return ResponseEntity.ok(tema);
-	}
-	
-	@GetMapping(value = "/{id}/sprint")
-	public ResponseEntity<SprintDTO> findSprintByIdTema(@PathVariable Long id) {
-		SprintDTO sprint = service.findSprintByIdTema(id);
-		return ResponseEntity.ok().body(sprint);	
 	}
 
 	@PutMapping(value = "/{id}")
