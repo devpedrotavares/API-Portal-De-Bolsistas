@@ -1,5 +1,7 @@
 package com.compass.portalcompass.controllers;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.compass.portalcompass.dto.MaterialDeEstudoDTO;
+import com.compass.portalcompass.dto.SprintDTO;
 import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.dto.TemaFormDTO;
 import com.compass.portalcompass.dto.VinculoTemaSprintForm;
@@ -45,8 +49,11 @@ public class TemaController {
 	public ResponseEntity<TemaDTO> findById(@PathVariable Long id) {
 		TemaDTO tema = service.findById(id);
 		return ResponseEntity.ok(tema);
+	}	
+	@GetMapping(value = "/{id}/materiaisDeEstudo")
+	public List<MaterialDeEstudoDTO> findMateriaisByIdTema(@PathVariable Long id) {
+		return service.findMateriaisByIdTema(id);
 	}
-
 	@PutMapping(value = "/{id}")
 	@Transactional
 	public ResponseEntity<TemaDTO> update(@PathVariable Long id, @RequestBody TemaFormDTO temaBody) {

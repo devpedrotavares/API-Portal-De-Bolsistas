@@ -1,7 +1,9 @@
 package com.compass.portalcompass.services;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
-
+import com.compass.portalcompass.dto.MaterialDeEstudoDTO;
+import com.compass.portalcompass.dto.SprintDTO;
 import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.dto.TemaFormDTO;
 import com.compass.portalcompass.dto.VinculoTemaSprintForm;
@@ -20,4 +22,8 @@ public interface TemaService {
 	
 	void vincularSprint(VinculoTemaSprintForm form);
 	
+	SprintDTO findSprintByIdTema(Long id);
+
+	List<MaterialDeEstudoDTO> findMateriaisByIdTema(Long id);
+
 }
