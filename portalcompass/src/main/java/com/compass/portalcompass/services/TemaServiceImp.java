@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.compass.portalcompass.dto.MaterialDeEstudoDTO;
-import com.compass.portalcompass.dto.SprintDTO;
 import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.dto.TemaFormDTO;
 import com.compass.portalcompass.dto.VinculoTemaSprintForm;
@@ -101,5 +100,6 @@ public class TemaServiceImp implements TemaService {
 		List<MaterialDeEstudo> lista = tema.getMateriaisDeEstudo();
 		return lista.stream().map(mat -> mapper.map(mat, MaterialDeEstudoDTO.class)).collect(Collectors.toList());
 	}
+
 
 }

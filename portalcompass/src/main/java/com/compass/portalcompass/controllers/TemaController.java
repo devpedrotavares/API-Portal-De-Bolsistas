@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.compass.portalcompass.dto.MaterialDeEstudoDTO;
-import com.compass.portalcompass.dto.SprintDTO;
 import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.dto.TemaFormDTO;
 import com.compass.portalcompass.dto.VinculoTemaSprintForm;
