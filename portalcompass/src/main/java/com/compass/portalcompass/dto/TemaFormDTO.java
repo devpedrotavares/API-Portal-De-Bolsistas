@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TemaFormDTO {
 
-	private Long id;
 	@NotEmpty(message = "Precisa preencher o nome")
 	private String nome;
 }
