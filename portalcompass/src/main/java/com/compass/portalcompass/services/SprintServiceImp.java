@@ -16,15 +16,19 @@ import com.compass.portalcompass.dto.SprintDTO;
 import com.compass.portalcompass.dto.SprintFormDTO;
 import com.compass.portalcompass.dto.TemaDTO;
 import com.compass.portalcompass.entities.Sprint;
+import com.compass.portalcompass.entities.Tema;
 import com.compass.portalcompass.exception.BancoDeDadosExcecao;
 import com.compass.portalcompass.exception.NaoEncontradoExcecao;
 import com.compass.portalcompass.repositories.SprintRepositorio;
+import com.compass.portalcompass.repositories.TemaRepositorio;
 
 
 
 @Service
 public  class SprintServiceImp implements SprintService {
 
+	@Autowired
+	private TemaRepositorio temaRepositorio;
 	
 	@Autowired
 	private SprintRepositorio repositorio;
@@ -90,7 +94,7 @@ public  class SprintServiceImp implements SprintService {
 
 	@Override
 	public SprintDTO findSprintByIdTema(Long id) {
-		Sprint tema = repositorio.findById(id)
+		Tema tema = temaRepositorio.findById(id)
 				.orElseThrow(() -> new NaoEncontradoExcecao(id));
 		Sprint sprint = repositorio.findByTemas(tema);
 		return mapper.map(sprint, SprintDTO.class);
