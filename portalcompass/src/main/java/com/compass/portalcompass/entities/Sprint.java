@@ -27,11 +27,10 @@ public class Sprint {
 	private LocalDate dataDeInicio;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate dataDeTermino;
-	@OneToMany(mappedBy="sprint", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "sprint", fetch = FetchType.LAZY)
 	private List<Tema> temas = new ArrayList<>();
-	
+
 	public void addTemas(Tema obj) {
 		temas.add(obj);
 	}
-
 }
