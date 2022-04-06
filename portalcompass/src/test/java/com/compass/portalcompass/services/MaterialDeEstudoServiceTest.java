@@ -64,8 +64,8 @@ class MaterialDeEstudoServiceTest {
 		Page<MaterialDeEstudoDTO> retornado = materialDeEstudoService.findAll(10, 0, null);
 
 		Assertions.assertEquals(retornado, materiaisPage.map(s -> mapper.map(s, MaterialDeEstudoDTO.class)));
-		Assertions.assertTrue(
-				retornado.getContent().get(0).equals(mapper.map(materiais.get(0), MaterialDeEstudoDTO.class)));
+		Assertions.assertEquals(
+				retornado.getContent().get(0), mapper.map(materiais.get(0), MaterialDeEstudoDTO.class));
 		Assertions.assertTrue(retornado.getTotalPages() == 1);
 	}
 
