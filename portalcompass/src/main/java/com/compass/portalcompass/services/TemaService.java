@@ -24,5 +24,4 @@ public interface TemaService {
 	void vincularSprint(VinculoTemaSprintForm form);
 
 	List<MaterialDeEstudoDTO> findMateriaisByIdTema(Long id);
-
 }
