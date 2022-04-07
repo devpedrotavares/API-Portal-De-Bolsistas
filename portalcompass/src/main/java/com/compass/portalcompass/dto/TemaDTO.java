@@ -15,6 +15,8 @@ public class TemaDTO {
 	public TemaDTO(Tema tema) {
 		this.id = tema.getId();
 		this.nome = tema.getNome();
-		this.sprint = new SprintDTO(tema.getSprint());
+		if(tema.getSprint() == null) 
+			this.sprint = null;
+		else this.sprint = new SprintDTO(tema.getSprint());
 	}
 }
