@@ -62,9 +62,7 @@ class TemaServiceImpTest {
 		Page<TemaDTO> retornado = temaService.findAll(10, 0, null);
 		
 		Assertions.assertEquals(retornado, temasPage.map(t -> new TemaDTO(t)));
-		Assertions.assertTrue(
-				retornado.getContent().get(0)
-				.equals(new TemaDTO(temas.get(0))));
+		Assertions.assertEquals(retornado.getContent().get(0), new TemaDTO(temas.get(0)));
 		Assertions.assertTrue(retornado.getTotalPages() == 1);
 	}
 	
