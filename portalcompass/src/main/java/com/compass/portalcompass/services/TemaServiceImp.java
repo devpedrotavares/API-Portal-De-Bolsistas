@@ -31,7 +31,7 @@ public class TemaServiceImp implements TemaService {
 	private TemaRepositorio repositorio;
 	
 	@Autowired
-	private SprintRepositorio sprintReposiorio;
+	private SprintRepositorio sprintRepositorio;
 	
 	@Autowired
 	private ModelMapper mapper;
@@ -85,7 +85,7 @@ public class TemaServiceImp implements TemaService {
 	public void vincularSprint(VinculoTemaSprintForm form) {
 		Tema tema = repositorio.findById(form.getTemaId())
 				.orElseThrow(() -> new NaoEncontradoExcecao(form.getTemaId()));
-		Sprint sprint = sprintReposiorio.findById(form.getSprintId())
+		Sprint sprint = sprintRepositorio.findById(form.getSprintId())
 				.orElseThrow(() -> new NaoEncontradoExcecao(form.getTemaId()));
 	
 		tema.setSprint(sprint);;
