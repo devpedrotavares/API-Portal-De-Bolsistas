@@ -3,6 +3,7 @@ package com.compass.portalcompass.controllers;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,7 +34,7 @@ public class TemaController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<TemaDTO> insert(@RequestBody TemaFormDTO temaBody) {
+	public ResponseEntity<TemaDTO> insert(@RequestBody @Valid TemaFormDTO temaBody) {
 		TemaDTO tema = service.insert(temaBody);
 		return ResponseEntity.status(HttpStatus.CREATED).body(tema);
 	}
@@ -55,7 +56,7 @@ public class TemaController {
 	}
 	@PutMapping(value = "/{id}")
 	@Transactional
-	public ResponseEntity<TemaDTO> update(@PathVariable Long id, @RequestBody TemaFormDTO temaBody) {
+	public ResponseEntity<TemaDTO> update(@PathVariable Long id, @RequestBody @Valid TemaFormDTO temaBody) {
 		TemaDTO tema = service.update(id, temaBody);
 		return ResponseEntity.ok(tema);
 	}
@@ -63,7 +64,7 @@ public class TemaController {
 	// vincula o material de estudo ao tema
 	@PutMapping(value = "/sprint")
 	@Transactional
-	public ResponseEntity<?> vincularASprint(@RequestBody VinculoTemaSprintForm form) {
+	public ResponseEntity<?> vincularASprint(@RequestBody @Valid VinculoTemaSprintForm form) {
 		service.vincularSprint(form);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
