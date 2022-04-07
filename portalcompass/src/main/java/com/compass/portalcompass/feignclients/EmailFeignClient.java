@@ -16,7 +16,7 @@ import com.compass.email.entities.Email;
 @FeignClient(name = "email", path = "/emails")
 public interface EmailFeignClient {
 
-	@PostMapping
+	@PostMapping(value = "/emails")
 	@Transactional
 	public ResponseEntity<Email> sendEmail(@RequestBody @Valid EmailDTO emailDTO);
 }

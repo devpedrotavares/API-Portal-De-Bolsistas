@@ -1,9 +1,9 @@
 package com.compass.portalcompass.controllers;
 
 import javax.transaction.Transactional;
+
 import javax.validation.Valid;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,8 +36,6 @@ public class EstagiarioController {
 	@Autowired
 	private EstagiarioService service;
 	
-	@Autowired 
-	private ModelMapper mapper;
 
 	// Retorna todos os estagiários. Obs.: tem parâmetro opcional para buscar pelo
 	// tipo da bolsa
@@ -72,12 +70,13 @@ public class EstagiarioController {
 	
 	@PostMapping(value = "/emails")
 	@Transactional
-	public ResponseEntity<EmailDTO> sendEmail(@RequestBody @Valid EmailDTO emailDTO) {
+	public ResponseEntity<EmailDTO> sendEmail(@RequestBody @Valid Email emailBody) {
 		EmailDTO email = new EmailDTO();
-		BeanUtils.copyProperties(emailDTO, email);
+		BeanUtils.copyProperties(emailBody, email);
 		service.sendEmail(email);
 		return ResponseEntity.status(HttpStatus.CREATED).body(email);
 	}
+	
 
 	// registra as informações da relação estagiário-sprint
 	@PutMapping(value = "/{idEstagiario}/sprint/{idSprint}")

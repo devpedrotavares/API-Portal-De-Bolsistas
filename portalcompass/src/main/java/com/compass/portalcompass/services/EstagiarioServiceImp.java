@@ -45,10 +45,12 @@ public class EstagiarioServiceImp implements EstagiarioService {
 	private EstagiarioSprintRepositorio vinculoRepositorio;
 	@Autowired
 	private SprintRepositorio sprintRepositorio;
-	@Autowired TemaRepositorio temaRepositorio;
+	@Autowired 
+	private TemaRepositorio temaRepositorio;
 	
 	@Autowired
 	private EmailFeignClient emailFeignClient;
+	
 		
 	@Autowired 
 	private ModelMapper mapper;
