@@ -1,7 +1,10 @@
 package com.compass.portalcompass.controllers;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.compass.email.dto.EmailDTO;
+import com.compass.email.entities.Email;
 import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
 import com.compass.portalcompass.dto.EstagiarioSprintDTO;
@@ -30,6 +35,9 @@ public class EstagiarioController {
 
 	@Autowired
 	private EstagiarioService service;
+	
+	@Autowired 
+	private ModelMapper mapper;
 
 	// Retorna todos os estagiários. Obs.: tem parâmetro opcional para buscar pelo
 	// tipo da bolsa
@@ -60,6 +68,15 @@ public class EstagiarioController {
 	public ResponseEntity<EstagiarioDTO> insert(@RequestBody EstagiarioFormDTO estagiarioBody) {
 		EstagiarioDTO estagiario = service.insert(estagiarioBody);
 		return ResponseEntity.status(HttpStatus.CREATED).body(estagiario);
+	}
+	
+	@PostMapping(value = "/emails")
+	@Transactional
+	public ResponseEntity<EmailDTO> sendEmail(@RequestBody @Valid EmailDTO emailDTO) {
+		EmailDTO email = new EmailDTO();
+		BeanUtils.copyProperties(emailDTO, email);
+		service.sendEmail(email);
+		return ResponseEntity.status(HttpStatus.CREATED).body(email);
 	}
 
 	// registra as informações da relação estagiário-sprint
