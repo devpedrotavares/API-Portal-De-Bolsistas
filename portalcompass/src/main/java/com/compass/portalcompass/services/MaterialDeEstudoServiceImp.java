@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.compass.portalcompass.dto.MaterialDeEstudoDTO;
@@ -49,7 +50,7 @@ public class MaterialDeEstudoServiceImp implements MaterialDeEstudoService{
 		if(sort == null) 
 			pageable = PageRequest.of(page, size);
 		else 
-			pageable = PageRequest.of(page, size);
+			pageable = PageRequest.of(page, size, Sort.by(sort));
 		
 		Page<MaterialDeEstudo> listaMatEstudo = repositorio.findAll(pageable);
 		return listaMatEstudo.map(matEst -> mapper.map(matEst, MaterialDeEstudoDTO.class));

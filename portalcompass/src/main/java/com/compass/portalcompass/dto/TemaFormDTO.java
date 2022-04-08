@@ -1,6 +1,6 @@
 package com.compass.portalcompass.dto;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 import com.compass.portalcompass.entities.Tema;
 
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TemaFormDTO {
 
-	@NotEmpty(message = "Precisa preencher o nome")
+	@NotBlank(message = "Precisa preencher o nome")
 	private String nome;
 	
 	public TemaFormDTO(Tema tema) {
