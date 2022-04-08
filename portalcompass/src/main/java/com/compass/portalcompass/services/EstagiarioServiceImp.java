@@ -92,7 +92,7 @@ public class EstagiarioServiceImp implements EstagiarioService {
 	}
 	
 	@Override
-	public void vincularASprint(VinculoEstagiarioSprintForm form) {
+	public EstagiarioSprint vincularASprint(VinculoEstagiarioSprintForm form) {
 		EstagiarioSprint vinculo = new EstagiarioSprint();
 		Estagiario estagiario = repositorio.getById(form.getEstagiarioId());
 		Sprint sprint = sprintRepositorio.getById(form.getSprintId());
@@ -100,7 +100,7 @@ public class EstagiarioServiceImp implements EstagiarioService {
 		vinculo.setEstagiario(estagiario);
 		vinculo.setSprint(sprint);
 		
-		vinculoRepositorio.save(vinculo);
+		return vinculoRepositorio.save(vinculo);
 	}
 
 	@Override
