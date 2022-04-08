@@ -2,9 +2,8 @@ package com.compass.portalcompass.controllers;
 
 import javax.transaction.Transactional;
 
-import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,14 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.compass.email.dto.EmailDTO;
-import com.compass.email.entities.Email;
 import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
 import com.compass.portalcompass.dto.EstagiarioSprintDTO;
 import com.compass.portalcompass.dto.VinculoEstagiarioSprintForm;
 import com.compass.portalcompass.dto.VinculoInfosForm;
 import com.compass.portalcompass.enums.TipoBolsa;
+import com.compass.portalcompass.feignclients.EmailFeignClient;
+import com.compass.portalcompass.feignclients.request.EmailDTO;
+import com.compass.portalcompass.feignclients.response.Email;
 import com.compass.portalcompass.services.EstagiarioService;
 
 @RestController
@@ -35,6 +35,7 @@ public class EstagiarioController {
 
 	@Autowired
 	private EstagiarioService service;
+	
 	
 
 	// Retorna todos os estagiários. Obs.: tem parâmetro opcional para buscar pelo
@@ -70,13 +71,10 @@ public class EstagiarioController {
 	
 	@PostMapping(value = "/emails")
 	@Transactional
-	public ResponseEntity<EmailDTO> sendEmail(@RequestBody @Valid Email emailBody) {
-		EmailDTO email = new EmailDTO();
-		BeanUtils.copyProperties(emailBody, email);
-		service.sendEmail(email);
+	public ResponseEntity<Email> sendEmail(@RequestBody EmailDTO emailBody) {
+		Email email = service.sendEmail(emailBody);
 		return ResponseEntity.status(HttpStatus.CREATED).body(email);
 	}
-	
 
 	// registra as informações da relação estagiário-sprint
 	@PutMapping(value = "/{idEstagiario}/sprint/{idSprint}")

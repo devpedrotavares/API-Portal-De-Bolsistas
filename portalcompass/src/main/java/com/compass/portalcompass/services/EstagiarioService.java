@@ -2,24 +2,24 @@ package com.compass.portalcompass.services;
 
 import org.springframework.data.domain.Page;
 
-import com.compass.email.dto.EmailDTO;
-import com.compass.email.entities.Email;
 import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
 import com.compass.portalcompass.dto.EstagiarioSprintDTO;
 import com.compass.portalcompass.dto.VinculoEstagiarioSprintForm;
 import com.compass.portalcompass.dto.VinculoInfosForm;
 import com.compass.portalcompass.enums.TipoBolsa;
+import com.compass.portalcompass.feignclients.request.EmailDTO;
+import com.compass.portalcompass.feignclients.response.Email;
 
 public interface EstagiarioService {
 
 	EstagiarioDTO insert(EstagiarioFormDTO estagiarioBody);
 	
-	Email sendEmail(EmailDTO email);
-
 	Page<EstagiarioDTO> findAll(int size, int page, String sort);
 
 	EstagiarioDTO findById(Long id);
+	
+	Email sendEmail(EmailDTO emailBody);
 
 	EstagiarioDTO update(Long id, EstagiarioFormDTO estagiarioBody);
 

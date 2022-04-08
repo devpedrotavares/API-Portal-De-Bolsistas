@@ -15,8 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.compass.email.dto.EmailDTO;
-import com.compass.email.entities.Email;
 import com.compass.portalcompass.dto.EstagiarioDTO;
 import com.compass.portalcompass.dto.EstagiarioFormDTO;
 import com.compass.portalcompass.dto.EstagiarioSprintDTO;
@@ -31,6 +29,8 @@ import com.compass.portalcompass.enums.TipoBolsa;
 import com.compass.portalcompass.exception.BancoDeDadosExcecao;
 import com.compass.portalcompass.exception.NaoEncontradoExcecao;
 import com.compass.portalcompass.feignclients.EmailFeignClient;
+import com.compass.portalcompass.feignclients.request.EmailDTO;
+import com.compass.portalcompass.feignclients.response.Email;
 import com.compass.portalcompass.repositories.EstagiarioRepositorio;
 import com.compass.portalcompass.repositories.EstagiarioSprintRepositorio;
 import com.compass.portalcompass.repositories.SprintRepositorio;
@@ -47,11 +47,9 @@ public class EstagiarioServiceImp implements EstagiarioService {
 	private SprintRepositorio sprintRepositorio;
 	@Autowired 
 	private TemaRepositorio temaRepositorio;
-	
 	@Autowired
 	private EmailFeignClient emailFeignClient;
 	
-		
 	@Autowired 
 	private ModelMapper mapper;
 
@@ -147,8 +145,9 @@ public class EstagiarioServiceImp implements EstagiarioService {
 	}
 
 	@Override
-	public Email sendEmail(EmailDTO email) {
-		Email emailEnvio = emailFeignClient.sendEmail(email).getBody();
-		return emailEnvio;
+	public Email sendEmail(EmailDTO emailBody ) {
+		Email email = emailFeignClient.sendEmail(emailBody).getBody();
+		return email;
 	}
+
 }
