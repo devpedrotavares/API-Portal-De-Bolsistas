@@ -3,6 +3,7 @@ package com.compass.portalcompass.services;
 
 
 import java.util.Optional;
+
 import java.util.Set;
 
 import org.modelmapper.ModelMapper;
@@ -27,6 +28,9 @@ import com.compass.portalcompass.entities.Tema;
 import com.compass.portalcompass.enums.TipoBolsa;
 import com.compass.portalcompass.exception.BancoDeDadosExcecao;
 import com.compass.portalcompass.exception.NaoEncontradoExcecao;
+import com.compass.portalcompass.feignclients.EmailFeignClient;
+import com.compass.portalcompass.feignclients.request.EmailDTO;
+import com.compass.portalcompass.feignclients.response.Email;
 import com.compass.portalcompass.repositories.EstagiarioRepositorio;
 import com.compass.portalcompass.repositories.EstagiarioSprintRepositorio;
 import com.compass.portalcompass.repositories.SprintRepositorio;
@@ -41,7 +45,10 @@ public class EstagiarioServiceImp implements EstagiarioService {
 	private EstagiarioSprintRepositorio vinculoRepositorio;
 	@Autowired
 	private SprintRepositorio sprintRepositorio;
-	@Autowired TemaRepositorio temaRepositorio;
+	@Autowired 
+	private TemaRepositorio temaRepositorio;
+	@Autowired
+	private EmailFeignClient emailFeignClient;
 	
 	@Autowired 
 	private ModelMapper mapper;
@@ -135,6 +142,12 @@ public class EstagiarioServiceImp implements EstagiarioService {
 		form.getIdsTemasReforco().forEach(idTema -> {
 			temasReforco.add(temaRepositorio.getById(idTema));
 		});
+	}
+
+	@Override
+	public Email sendEmail(EmailDTO emailBody ) {
+		Email email = emailFeignClient.sendEmail(emailBody).getBody();
+		return email;
 	}
 
 }

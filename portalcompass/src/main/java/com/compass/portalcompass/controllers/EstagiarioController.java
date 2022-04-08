@@ -3,6 +3,8 @@ package com.compass.portalcompass.controllers;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,9 @@ import com.compass.portalcompass.dto.EstagiarioSprintDTO;
 import com.compass.portalcompass.dto.VinculoEstagiarioSprintForm;
 import com.compass.portalcompass.dto.VinculoInfosForm;
 import com.compass.portalcompass.enums.TipoBolsa;
+import com.compass.portalcompass.feignclients.EmailFeignClient;
+import com.compass.portalcompass.feignclients.request.EmailDTO;
+import com.compass.portalcompass.feignclients.response.Email;
 import com.compass.portalcompass.services.EstagiarioService;
 
 @RestController
@@ -31,6 +36,8 @@ public class EstagiarioController {
 
 	@Autowired
 	private EstagiarioService service;
+	
+	
 
 	// Retorna todos os estagiários. Obs.: tem parâmetro opcional para buscar pelo
 	// tipo da bolsa
@@ -61,6 +68,13 @@ public class EstagiarioController {
 	public ResponseEntity<EstagiarioDTO> insert(@RequestBody @Valid EstagiarioFormDTO estagiarioBody) {
 		EstagiarioDTO estagiario = service.insert(estagiarioBody);
 		return ResponseEntity.status(HttpStatus.CREATED).body(estagiario);
+	}
+	
+	@PostMapping(value = "/emails")
+	@Transactional
+	public ResponseEntity<Email> sendEmail(@RequestBody EmailDTO emailBody) {
+		Email email = service.sendEmail(emailBody);
+		return ResponseEntity.status(HttpStatus.CREATED).body(email);
 	}
 
 	// registra as informações da relação estagiário-sprint

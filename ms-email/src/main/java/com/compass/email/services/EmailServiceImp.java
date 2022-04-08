@@ -1,5 +1,7 @@
 package com.compass.email.services;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.mail.MailException;
@@ -23,7 +25,7 @@ public class EmailServiceImp implements EmailService {
 
 	@Override
 	public Email sendEmail(Email email) {
-		email.setSendDateEmail(null);
+		email.setSendDateEmail(LocalDateTime.now());
 		try {
 			SimpleMailMessage message = new SimpleMailMessage();
 			message.setFrom(email.getEmailFrom());

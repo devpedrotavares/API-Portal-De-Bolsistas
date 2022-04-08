@@ -8,14 +8,18 @@ import com.compass.portalcompass.dto.EstagiarioSprintDTO;
 import com.compass.portalcompass.dto.VinculoEstagiarioSprintForm;
 import com.compass.portalcompass.dto.VinculoInfosForm;
 import com.compass.portalcompass.enums.TipoBolsa;
+import com.compass.portalcompass.feignclients.request.EmailDTO;
+import com.compass.portalcompass.feignclients.response.Email;
 
 public interface EstagiarioService {
 
 	EstagiarioDTO insert(EstagiarioFormDTO estagiarioBody);
-
+	
 	Page<EstagiarioDTO> findAll(int size, int page, String sort);
 
 	EstagiarioDTO findById(Long id);
+	
+	Email sendEmail(EmailDTO emailBody);
 
 	EstagiarioDTO update(Long id, EstagiarioFormDTO estagiarioBody);
 
