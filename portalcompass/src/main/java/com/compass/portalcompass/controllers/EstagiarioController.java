@@ -1,6 +1,7 @@
 package com.compass.portalcompass.controllers;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -57,7 +58,7 @@ public class EstagiarioController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<EstagiarioDTO> insert(@RequestBody EstagiarioFormDTO estagiarioBody) {
+	public ResponseEntity<EstagiarioDTO> insert(@RequestBody @Valid EstagiarioFormDTO estagiarioBody) {
 		EstagiarioDTO estagiario = service.insert(estagiarioBody);
 		return ResponseEntity.status(HttpStatus.CREATED).body(estagiario);
 	}
@@ -66,20 +67,21 @@ public class EstagiarioController {
 	@PutMapping(value = "/{idEstagiario}/sprint/{idSprint}")
 	@Transactional
 	public ResponseEntity<Void> cadastraInfos(@PathVariable Long idEstagiario, @PathVariable Long idSprint,
-			@RequestBody VinculoInfosForm form) {
+			@RequestBody @Valid VinculoInfosForm form) {
 		service.cadastrarInfos(idEstagiario, idSprint, form);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@PutMapping(value = "/{id}")
 	@Transactional
-	public ResponseEntity<EstagiarioDTO> update(@PathVariable Long id, @RequestBody EstagiarioFormDTO estagiarioBody) {
+	public ResponseEntity<EstagiarioDTO> update(@PathVariable Long id,
+			@RequestBody @Valid EstagiarioFormDTO estagiarioBody) {
 		EstagiarioDTO estagiario = service.update(id, estagiarioBody);
 		return ResponseEntity.ok(estagiario);
 	}
 
 	@PutMapping(value = "/sprint")
-	public ResponseEntity<?> vincularASprint(@RequestBody VinculoEstagiarioSprintForm form) {
+	public ResponseEntity<?> vincularASprint(@RequestBody @Valid VinculoEstagiarioSprintForm form) {
 		service.vincularASprint(form);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

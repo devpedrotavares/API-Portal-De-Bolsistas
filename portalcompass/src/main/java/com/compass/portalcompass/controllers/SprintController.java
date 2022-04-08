@@ -61,7 +61,7 @@ public class SprintController {
 	    
 	    @PutMapping(value = "/{id}")
 		@Transactional
-		public ResponseEntity<SprintDTO> update(@PathVariable Long id, @RequestBody SprintFormDTO Body) {
+		public ResponseEntity<SprintDTO> update(@PathVariable Long id, @RequestBody @Valid SprintFormDTO Body) {
 			SprintDTO sprint = service.update(id, Body);
 			return ResponseEntity.ok(sprint);
 		}
