@@ -1,11 +1,15 @@
 package com.compass.portalcompass.controllers.exception;
 
+import java.net.ConnectException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -47,21 +51,51 @@ public class ResourceExceptionHandler {
 				request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
-	
-	// Quando o cliente omite dados obrigatórios. Retorna uma lista de erros, para cada campo inválido
+
+	// Quando o cliente omite dados obrigatórios. Retorna uma lista de erros, para
+	// cada campo inválido
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<List<StandardError>> handle(MethodArgumentNotValidException e,
-			HttpServletRequest request) {
+	public ResponseEntity<List<StandardError>> handle(MethodArgumentNotValidException e, HttpServletRequest request) {
 		List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
 		List<StandardError> errors = new ArrayList<>();
-		
+
 		fieldErrors.forEach(fe -> {
 			String msg = String.format("Campo: %s. Causa: %s", fe.getField(), fe.getDefaultMessage());
 			String error = "Invalid or omitted arguments";
 			HttpStatus status = HttpStatus.BAD_REQUEST;
 			errors.add(new StandardError(Instant.now(), status.value(), error, msg, request.getRequestURI()));
-			});
+		});
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+	}
+
+	@ExceptionHandler(ConnectException.class)
+	public ResponseEntity<StandardError> handle(ConnectException e, HttpServletRequest request) {
+		String error = "Connection error";
+		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
+				request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<StandardError> handle(ConstraintViolationException e, HttpServletRequest request) {
+		ConstraintViolation<?> cv = e.getConstraintViolations().iterator().next();
+		String message = String.format("A propriedade '%s' %s", cv.getPropertyPath(), cv.getMessage());
+		
+		String error = "Constraint Violation";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, message,
+				request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+
+	@ExceptionHandler(PropertyReferenceException.class)
+	public ResponseEntity<StandardError> handle(PropertyReferenceException e, HttpServletRequest request) {
+		String error = "Property Reference Error";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
+				request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
 	}
 }

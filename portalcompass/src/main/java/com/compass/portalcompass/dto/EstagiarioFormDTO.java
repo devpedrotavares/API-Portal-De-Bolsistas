@@ -4,6 +4,7 @@ package com.compass.portalcompass.dto;
 
 
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -15,12 +16,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class EstagiarioFormDTO {
-
-	@NotEmpty(message = "Precisa preencher o campo")
+	@NotNull(message = "Precisa preencher o campo")
 	private Long matricula;
-	@NotEmpty(message = "Precisa preencher o campo")
+	@NotBlank(message = "Precisa preencher o campo")
 	private String nome;
-	@NotEmpty(message = "Precisa preencher um email")
+	@NotBlank(message = "Precisa preencher um email")
 	private String email;
 	@NotNull(message = "Precisa preencher com o tipo da bolsa")
 	private TipoBolsa tipoBolsa;
