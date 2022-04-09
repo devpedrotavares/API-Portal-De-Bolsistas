@@ -5,14 +5,17 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,6 +29,15 @@ public class ResourceExceptionHandler {
 	@ExceptionHandler(NaoEncontradoExcecao.class)
 	public ResponseEntity<StandardError> resourceNoutFound(NaoEncontradoExcecao e, HttpServletRequest request) {
 		String error = "Resource not found";
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
+				request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<StandardError> handle(EntityNotFoundException e, HttpServletRequest request) {
+		String error = "Entity not found";
 		HttpStatus status = HttpStatus.NOT_FOUND;
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
 				request.getRequestURI());
@@ -95,6 +107,17 @@ public class ResourceExceptionHandler {
 		String error = "Property Reference Error";
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
+				request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<StandardError> handle(DataIntegrityViolationException e, HttpServletRequest request) {
+		String msg = e.getCause().getLocalizedMessage() + ". Verif ";
+
+		String error = "Data Integrity Violation";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getCause().getLocalizedMessage(),
 				request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
