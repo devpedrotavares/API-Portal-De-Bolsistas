@@ -102,7 +102,8 @@ public class ResourceExceptionHandler {
 	
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<StandardError> handle(DataIntegrityViolationException e, HttpServletRequest request) {
-		System.out.println( e.getCause().getMessage() );
+		String msg = e.getCause().getLocalizedMessage() + ". Verif ";
+
 		String error = "Data Integrity Violation";
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getCause().getLocalizedMessage(),

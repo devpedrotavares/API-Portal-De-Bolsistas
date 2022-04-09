@@ -32,5 +32,5 @@ public interface EstagiarioService {
 
 	EstagiarioSprintDTO getEstagiarioSprint(Long idEstagiario, Long idSprint);
 
-	void cadastrarInfos(Long idEstagiario, Long idSprint, VinculoInfosForm form);
+	EstagiarioSprintDTO cadastrarInfos(Long idEstagiario, Long idSprint, VinculoInfosForm form);
 }

@@ -3,7 +3,6 @@ package com.compass.portalcompass.services;
 
 
 import java.util.Optional;
-
 import java.util.Set;
 
 import org.modelmapper.ModelMapper;
@@ -132,16 +131,19 @@ public class EstagiarioServiceImp implements EstagiarioService {
 
 	//cadastra informações da relação estagiário-sprint
 	@Override
-	public void cadastrarInfos(Long idEstagiario, Long idSprint, VinculoInfosForm form) {
+	public EstagiarioSprintDTO cadastrarInfos(Long idEstagiario, Long idSprint, VinculoInfosForm form) {
 		EstagiarioSprintId id = new EstagiarioSprintId(idEstagiario, idSprint);
 		EstagiarioSprint vinculo = vinculoRepositorio.getById(id);
 		vinculo.setNotaTecnica(form.getNotaTecnica());
 		vinculo.setNotaComportamental(form.getNotaComportamental());
 		
 		Set<Tema> temasReforco = vinculo.getTemasReforco();
+		
 		form.getIdsTemasReforco().forEach(idTema -> {
 			temasReforco.add(temaRepositorio.getById(idTema));
 		});
+		
+		return mapper.map(vinculoRepositorio.save(vinculo), EstagiarioSprintDTO.class);
 	}
 
 	@Override
