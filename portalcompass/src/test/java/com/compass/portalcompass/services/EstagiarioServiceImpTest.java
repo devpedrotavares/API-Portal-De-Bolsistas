@@ -1,17 +1,17 @@
 package com.compass.portalcompass.services;
 
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -75,6 +75,20 @@ class EstagiarioServiceImpTest {
 	}
 
 	@Test
+	void deveriaListarPorTipoBolsa() {
+		List<Estagiario> estagiarios = new ArrayList<>();
+		estagiarios.add(getEstagiario());
+		Page<Estagiario> estagiariosPage = new PageImpl<>(estagiarios, PageRequest.of(0, 10), 1);
+
+		Mockito.when(this.estagiarioRepositorio.findByTipoBolsa(TipoBolsa.SPRING_BOOT, PageRequest.of(0, 10)))
+				.thenReturn(estagiariosPage);
+		
+		Page<EstagiarioDTO> retornado = estagiarioService.findByTipoBolsa(TipoBolsa.SPRING_BOOT, 10, 0);
+		
+		Assertions.assertEquals(retornado, estagiariosPage.map(est -> new EstagiarioDTO(est)));
+	}
+
+	@Test
 	void deveriaAtualizar() {
 		Optional<Estagiario> estagiarioOp = Optional.of(getEstagiario());
 		Mockito.when(this.estagiarioRepositorio.findById(Mockito.anyLong())).thenReturn(estagiarioOp);
@@ -133,7 +147,7 @@ class EstagiarioServiceImpTest {
 		vinculo.setSprint(getSprint());
 		vinculo.setNotaTecnica(new BigDecimal("8.0"));
 		vinculo.setNotaComportamental(new BigDecimal("8.0"));
-		
+
 		// definindo vinculoForm
 		VinculoInfosForm form = new VinculoInfosForm(new BigDecimal("9.5"), new BigDecimal("9.2"),
 				new ArrayList<Long>());
@@ -143,7 +157,7 @@ class EstagiarioServiceImpTest {
 		Mockito.when(this.vinculoRepositorio.save(Mockito.any(EstagiarioSprint.class))).then(returnsFirstArg());
 
 		EstagiarioSprintDTO retornado = this.estagiarioService.cadastrarInfos(Long.valueOf(1), Long.valueOf(1), form);
-		
+
 		Assertions.assertEquals(retornado, new EstagiarioSprintDTO(vinculo));
 	}
 
