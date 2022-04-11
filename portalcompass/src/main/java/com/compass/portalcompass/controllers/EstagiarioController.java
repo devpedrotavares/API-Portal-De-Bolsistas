@@ -4,6 +4,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,9 @@ public class EstagiarioController {
 
 	// Retorna todos os estagiários. Obs.: tem parâmetro opcional para buscar pelo
 	// tipo da bolsa
+	
 	@GetMapping
+	@Cacheable (value = "listaTodosOsEstagiarios")
 	public Page<EstagiarioDTO> findAll(@RequestParam(defaultValue = "10") int size,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(required = false) String sort,
 			@RequestParam(required = false) TipoBolsa tipoBolsa) {
@@ -48,6 +51,8 @@ public class EstagiarioController {
 	}
 
 	@GetMapping(value = "/{id}")
+	@Cacheable (value = "listaOsEstagiariosPorId")
+
 	public ResponseEntity<EstagiarioDTO> findById(@PathVariable Long id) {
 		EstagiarioDTO estagiario = service.findById(id);
 		return ResponseEntity.ok(estagiario);

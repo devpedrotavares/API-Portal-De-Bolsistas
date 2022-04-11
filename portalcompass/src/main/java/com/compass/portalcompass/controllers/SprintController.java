@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,8 @@ public class SprintController {
 	    }
 	    
 	    @GetMapping
+		@Cacheable (value = "listaTodasAsSprints")
+
 		public Page<SprintDTO> findAll(@RequestParam(defaultValue = "10") int size, 
 				@RequestParam(defaultValue = "0") int page, 
 				@RequestParam(required = false) String sort) {
@@ -49,6 +52,7 @@ public class SprintController {
 	     
 	    
 	    @GetMapping(value = "/{id}")
+	    @Cacheable (value = "listaSprintsPorId")
 		public ResponseEntity<SprintDTO> findById(@PathVariable Long id) {
 			SprintDTO sprint = service.findById(id);
 			return ResponseEntity.ok(sprint);
