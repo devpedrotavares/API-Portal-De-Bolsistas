@@ -1,0 +1,1 @@
+INSERT INTO INSTRUTOR(nome, email, senha) VALUES ('instrutor', 'instrutor@email.com', '$2a$10$BmtU.LRJ4LXCufg7X7dlRumZZwKIhOo7ZSDfW9VEH0fXv2YLBLMbW');
