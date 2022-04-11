@@ -5,7 +5,6 @@ package com.compass.portalcompass.dto;
 
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.compass.portalcompass.entities.Estagiario;

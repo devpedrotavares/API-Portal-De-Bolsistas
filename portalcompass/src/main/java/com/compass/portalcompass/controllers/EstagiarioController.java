@@ -3,8 +3,6 @@ package com.compass.portalcompass.controllers;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -25,7 +23,6 @@ import com.compass.portalcompass.dto.EstagiarioSprintDTO;
 import com.compass.portalcompass.dto.VinculoEstagiarioSprintForm;
 import com.compass.portalcompass.dto.VinculoInfosForm;
 import com.compass.portalcompass.enums.TipoBolsa;
-import com.compass.portalcompass.feignclients.EmailFeignClient;
 import com.compass.portalcompass.feignclients.request.EmailDTO;
 import com.compass.portalcompass.feignclients.response.Email;
 import com.compass.portalcompass.services.EstagiarioService;
