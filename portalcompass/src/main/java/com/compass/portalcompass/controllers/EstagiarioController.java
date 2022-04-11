@@ -4,6 +4,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -67,6 +68,7 @@ public class EstagiarioController {
 
 	@PostMapping
 	@Transactional
+	@CacheEvict (value = "listaTodosOsEstagiarios", allEntries = true )
 	public ResponseEntity<EstagiarioDTO> insert(@RequestBody @Valid EstagiarioFormDTO estagiarioBody) {
 		EstagiarioDTO estagiario = service.insert(estagiarioBody);
 		return ResponseEntity.status(HttpStatus.CREATED).body(estagiario);
@@ -90,6 +92,7 @@ public class EstagiarioController {
 
 	@PutMapping(value = "/{id}")
 	@Transactional
+	@CacheEvict (value = "listaTodosOsEstagiarios", allEntries = true )
 	public ResponseEntity<EstagiarioDTO> update(@PathVariable Long id,
 			@RequestBody @Valid EstagiarioFormDTO estagiarioBody) {
 		EstagiarioDTO estagiario = service.update(id, estagiarioBody);
@@ -104,6 +107,7 @@ public class EstagiarioController {
 
 	@DeleteMapping(value = "/{id}")
 	@Transactional
+	@CacheEvict (value = "listaTodosOsEstagiarios", allEntries = true )
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();

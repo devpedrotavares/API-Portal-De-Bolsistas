@@ -4,6 +4,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,7 @@ public class MaterialDeEstudoController {
 
 	@PutMapping(value = "/{id}")
 	@Transactional
+	@CacheEvict (value = "listaTodosOsMateraisDeEstudos", allEntries = true )
 	public ResponseEntity<MaterialDeEstudoDTO> update(@PathVariable Long id,
 			@RequestBody @Valid MaterialDeEstudoForm materialDeEstudoBody) {
 		MaterialDeEstudoDTO materialDeEstudoDto = service.update(id, materialDeEstudoBody);
@@ -62,12 +64,14 @@ public class MaterialDeEstudoController {
 
 	@PostMapping
 	@Transactional
+	@CacheEvict (value = "listaTodosOsMateraisDeEstudos", allEntries = true )
 	public ResponseEntity<MaterialDeEstudoDTO> insert(@RequestBody @Valid MaterialDeEstudoForm materialDeEstudoBody) {
 		MaterialDeEstudoDTO materialDeEstudo = service.insert(materialDeEstudoBody);
 		return ResponseEntity.status(HttpStatus.CREATED).body(materialDeEstudo);
 	}
 
 	@DeleteMapping(value = "/{id}")
+	@CacheEvict (value = "listaTodosOsMateraisDeEstudos", allEntries = true )
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		service.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);

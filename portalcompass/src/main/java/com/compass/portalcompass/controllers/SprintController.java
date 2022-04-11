@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,7 @@ public class SprintController {
 
 	    @PostMapping
 	    @Transactional
+	    @CacheEvict (value = "listaTodasAsSprints", allEntries = true )
 	    public ResponseEntity<SprintDTO> insert(@RequestBody @Valid SprintFormDTO SprintBody) {
 	        SprintDTO sprint = this.service.insert(SprintBody);
 	        return ResponseEntity.status(HttpStatus.CREATED).body(sprint);
@@ -42,7 +44,6 @@ public class SprintController {
 	    
 	    @GetMapping
 		@Cacheable (value = "listaTodasAsSprints")
-
 		public Page<SprintDTO> findAll(@RequestParam(defaultValue = "10") int size, 
 				@RequestParam(defaultValue = "0") int page, 
 				@RequestParam(required = false) String sort) {
@@ -65,12 +66,14 @@ public class SprintController {
 	    
 	    @PutMapping(value = "/{id}")
 		@Transactional
+	    @CacheEvict (value = "listaTodasAsSprints", allEntries = true )
 		public ResponseEntity<SprintDTO> update(@PathVariable Long id, @RequestBody @Valid SprintFormDTO Body) {
 			SprintDTO sprint = service.update(id, Body);
 			return ResponseEntity.ok(sprint);
 		}
 			
 	    @DeleteMapping(path = "/{id}")
+	    @CacheEvict (value = "listaTodasAsSprints", allEntries = true )
 	    public ResponseEntity<Void> delete(@PathVariable Long id) {
 	        this.service.delete(id);
 	        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
