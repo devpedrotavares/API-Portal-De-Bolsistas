@@ -4,6 +4,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,12 +32,14 @@ public class MaterialDeEstudoController {
 	MaterialDeEstudoService service;
 
 	@GetMapping
+	@Cacheable (value = "listaTodosOsMateraisDeEstudos")
 	public Page<MaterialDeEstudoDTO> findAll(@RequestParam(defaultValue = "10") int size,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(required = false) String sort) {
 		return service.findAll(size, page, sort);
 	}
 
 	@GetMapping(value = "/{id}")
+	@Cacheable (value = "listaPorIdOsMateraisDeEstudos")
 	public ResponseEntity<MaterialDeEstudoDTO> findById(@PathVariable Long id) {
 		MaterialDeEstudoDTO materialDeEstudo = service.findById(id);
 		return ResponseEntity.ok(materialDeEstudo);
@@ -43,6 +47,7 @@ public class MaterialDeEstudoController {
 
 	@PutMapping(value = "/{id}")
 	@Transactional
+	@CacheEvict (value = "listaTodosOsMateraisDeEstudos", allEntries = true )
 	public ResponseEntity<MaterialDeEstudoDTO> update(@PathVariable Long id,
 			@RequestBody @Valid MaterialDeEstudoForm materialDeEstudoBody) {
 		MaterialDeEstudoDTO materialDeEstudoDto = service.update(id, materialDeEstudoBody);
@@ -59,12 +64,14 @@ public class MaterialDeEstudoController {
 
 	@PostMapping
 	@Transactional
+	@CacheEvict (value = "listaTodosOsMateraisDeEstudos", allEntries = true )
 	public ResponseEntity<MaterialDeEstudoDTO> insert(@RequestBody @Valid MaterialDeEstudoForm materialDeEstudoBody) {
 		MaterialDeEstudoDTO materialDeEstudo = service.insert(materialDeEstudoBody);
 		return ResponseEntity.status(HttpStatus.CREATED).body(materialDeEstudo);
 	}
 
 	@DeleteMapping(value = "/{id}")
+	@CacheEvict (value = "listaTodosOsMateraisDeEstudos", allEntries = true )
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		service.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);

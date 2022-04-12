@@ -2,6 +2,7 @@ package com.compass.portalcompass.config.security;
 
 import java.io.IOException;
 
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,6 @@ public class AutenticacaoViaToken extends OncePerRequestFilter {
 	private InstrutorRepositorio instrutorRepositorio;
 
 	public AutenticacaoViaToken(TokenService tokenService, InstrutorRepositorio instrutorRepositorio) {
-		super();
 		this.tokenService = tokenService;
 		this.instrutorRepositorio = instrutorRepositorio;
 	}
@@ -33,14 +33,14 @@ public class AutenticacaoViaToken extends OncePerRequestFilter {
 		boolean valido = tokenService.isTokenValid(token);
 		
 		if(valido)
-			autenticarCliente(token);
+			autenticarInstrutor(token);
 		
 		filterChain.doFilter(request, response);
 	}
 
-	private void autenticarCliente(String token) {
-		Long idInstrutor = tokenService.getIdUsuario(token);
-		Instrutor instrutor = this.instrutorRepositorio.findById(idInstrutor).get();
+	private void autenticarInstrutor(String token) {
+		Long idInstrutor = tokenService.getIdInstrutor(token);
+		Instrutor instrutor = instrutorRepositorio.findById(idInstrutor).get();
 		
 		UsernamePasswordAuthenticationToken authentication = 
 				new UsernamePasswordAuthenticationToken(instrutor, null, instrutor.getAuthorities());

@@ -26,8 +26,13 @@ public class TokenService {
 		Date hoje = new Date();
 		Date dataExpiracao = new Date(hoje.getTime() + Long.parseLong(expiration));
 
-		return Jwts.builder().setIssuer("API portalcompass").setSubject(logado.getId().toString()).setIssuedAt(hoje)
-				.setExpiration(dataExpiracao).signWith(SignatureAlgorithm.HS256, secret).compact();
+		return Jwts.builder()
+				.setIssuer("API portalcompass")
+				.setSubject(logado.getId().toString())
+				.setIssuedAt(hoje)
+				.setExpiration(dataExpiracao)
+				.signWith(SignatureAlgorithm.HS256, secret)
+				.compact();
 	}
 
 	public boolean isTokenValid(String token) {
@@ -39,7 +44,7 @@ public class TokenService {
 		}
 	}
 
-	public Long getIdUsuario(String token) {
+	public Long getIdInstrutor(String token) {
 		Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
 		return Long.parseLong(claims.getSubject());
 	}

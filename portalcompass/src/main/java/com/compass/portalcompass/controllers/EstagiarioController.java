@@ -4,6 +4,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +40,9 @@ public class EstagiarioController {
 
 	// Retorna todos os estagiários. Obs.: tem parâmetro opcional para buscar pelo
 	// tipo da bolsa
+	
 	@GetMapping
+	@Cacheable (value = "listaTodosOsEstagiarios")
 	public Page<EstagiarioDTO> findAll(@RequestParam(defaultValue = "10") int size,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(required = false) String sort,
 			@RequestParam(required = false) TipoBolsa tipoBolsa) {
@@ -48,6 +52,8 @@ public class EstagiarioController {
 	}
 
 	@GetMapping(value = "/{id}")
+	@Cacheable (value = "listaOsEstagiariosPorId")
+
 	public ResponseEntity<EstagiarioDTO> findById(@PathVariable Long id) {
 		EstagiarioDTO estagiario = service.findById(id);
 		return ResponseEntity.ok(estagiario);
@@ -62,6 +68,7 @@ public class EstagiarioController {
 
 	@PostMapping
 	@Transactional
+	@CacheEvict (value = "listaTodosOsEstagiarios", allEntries = true )
 	public ResponseEntity<EstagiarioDTO> insert(@RequestBody @Valid EstagiarioFormDTO estagiarioBody) {
 		EstagiarioDTO estagiario = service.insert(estagiarioBody);
 		return ResponseEntity.status(HttpStatus.CREATED).body(estagiario);
@@ -85,6 +92,7 @@ public class EstagiarioController {
 
 	@PutMapping(value = "/{id}")
 	@Transactional
+	@CacheEvict (value = "listaTodosOsEstagiarios", allEntries = true )
 	public ResponseEntity<EstagiarioDTO> update(@PathVariable Long id,
 			@RequestBody @Valid EstagiarioFormDTO estagiarioBody) {
 		EstagiarioDTO estagiario = service.update(id, estagiarioBody);
@@ -99,6 +107,7 @@ public class EstagiarioController {
 
 	@DeleteMapping(value = "/{id}")
 	@Transactional
+	@CacheEvict (value = "listaTodosOsEstagiarios", allEntries = true )
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
