@@ -6,6 +6,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,18 +36,21 @@ public class TemaController {
 
 	@PostMapping
 	@Transactional
+    @CacheEvict (value = "listaTodosOsTemas", allEntries = true )
 	public ResponseEntity<TemaDTO> insert(@RequestBody @Valid TemaFormDTO temaBody) {
 		TemaDTO tema = service.insert(temaBody);
 		return ResponseEntity.status(HttpStatus.CREATED).body(tema);
 	}
 
 	@GetMapping
+	@Cacheable (value = "listaTodosOsTemas")
 	public Page<TemaDTO> findAll(@RequestParam(defaultValue = "10") int size,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(required = false) String sort) {
 		return service.findAll(size, page, sort);
 	}
 
 	@GetMapping(value = "/{id}")
+	@Cacheable (value = "listaTemasPorId")
 	public ResponseEntity<TemaDTO> findById(@PathVariable Long id) {
 		TemaDTO tema = service.findById(id);
 		return ResponseEntity.ok(tema);
@@ -56,6 +61,7 @@ public class TemaController {
 	}
 	@PutMapping(value = "/{id}")
 	@Transactional
+	@CacheEvict (value = "listaTodosOsTemas", allEntries = true )
 	public ResponseEntity<TemaDTO> update(@PathVariable Long id, @RequestBody @Valid TemaFormDTO temaBody) {
 		TemaDTO tema = service.update(id, temaBody);
 		return ResponseEntity.ok(tema);
@@ -71,6 +77,7 @@ public class TemaController {
 
 	@DeleteMapping(value = "/{id}")
 	@Transactional
+	@CacheEvict (value = "listaTodosOsTemas", allEntries = true )
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
