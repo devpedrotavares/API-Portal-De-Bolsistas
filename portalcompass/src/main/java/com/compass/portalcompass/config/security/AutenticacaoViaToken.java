@@ -7,18 +7,44 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-public class AutenticacaoViaToken extends OncePerRequestFilter{
+import com.compass.portalcompass.entities.Instrutor;
+import com.compass.portalcompass.repositories.InstrutorRepositorio;
+
+public class AutenticacaoViaToken extends OncePerRequestFilter {
+
+	private TokenService tokenService;
+	private InstrutorRepositorio instrutorRepositorio;
+
+	public AutenticacaoViaToken(TokenService tokenService, InstrutorRepositorio instrutorRepositorio) {
+		super();
+		this.tokenService = tokenService;
+		this.instrutorRepositorio = instrutorRepositorio;
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
+
 		String token = recuperarToken(request);
+		boolean valido = tokenService.isTokenValid(token);
 		
-				
+		if(valido)
+			autenticarCliente(token);
+		
 		filterChain.doFilter(request, response);
+	}
+
+	private void autenticarCliente(String token) {
+		Long idInstrutor = tokenService.getIdUsuario(token);
+		Instrutor instrutor = this.instrutorRepositorio.findById(idInstrutor).get();
+		
+		UsernamePasswordAuthenticationToken authentication = 
+				new UsernamePasswordAuthenticationToken(instrutor, null, instrutor.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 
 	private String recuperarToken(HttpServletRequest request) {
