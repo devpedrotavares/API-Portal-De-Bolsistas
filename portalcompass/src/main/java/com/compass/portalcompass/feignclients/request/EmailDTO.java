@@ -1,7 +1,12 @@
 package com.compass.portalcompass.feignclients.request;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.compass.portalcompass.entities.Estagiario;
 import com.compass.portalcompass.entities.EstagiarioSprint;
+import com.compass.portalcompass.entities.Tema;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,10 +31,14 @@ public class EmailDTO {
 		this.emailTo = estagiario.getEmail();
 		this.subject = "teste";
 		this.text = 
-				String.format("Bom dia, %s! Segue os resultados da avaliação. Nota comportamental: %s. Nota técnica: %s. Temas de reforço: %s", 
+				String.format("Bom dia, %s! Segue os resultados da avaliação na %s: \n"
+						+ "Nota comportamental: %s \n"
+						+ "Nota técnica: %s \n"
+						+ "Temas de reforço: %s \n", 
 						estagiario.getNome(), 
+						vinculo.getSprint().getNome(),
 						vinculo.getNotaComportamental().toString(), 
 						vinculo.getNotaTecnica().toString(),
-						vinculo.getTemasReforco().toString());
+						vinculo.getTemasReforco().stream().map(t -> t.getNome()).collect(Collectors.toList()).toString() );
 	}
 }
