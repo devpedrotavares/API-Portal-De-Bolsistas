@@ -139,9 +139,14 @@ public class EstagiarioServiceImp implements EstagiarioService {
 		
 		Set<Tema> temasReforco = vinculo.getTemasReforco();
 		
-		form.getIdsTemasReforco().forEach(idTema -> {
-			temasReforco.add(temaRepositorio.getById(idTema));
-		});
+		if(form.getIdsTemasReforco() != null)
+			form.getIdsTemasReforco().forEach(idTema -> {
+				temasReforco.add(temaRepositorio.getById(idTema));
+			});
+		
+		try {
+		emailFeignClient.sendEmail(new EmailDTO(vinculo));
+		}catch(Exception e) {System.out.println("EXCEÇÃO");}
 		
 		return mapper.map(vinculoRepositorio.save(vinculo), EstagiarioSprintDTO.class);
 	}
