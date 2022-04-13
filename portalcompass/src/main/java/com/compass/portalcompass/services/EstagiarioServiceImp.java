@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.compass.portalcompass.dto.EstagiarioDTO;
@@ -29,6 +30,7 @@ import com.compass.portalcompass.exception.BancoDeDadosExcecao;
 import com.compass.portalcompass.exception.NaoEncontradoExcecao;
 import com.compass.portalcompass.feignclients.EmailFeignClient;
 import com.compass.portalcompass.feignclients.request.EmailDTO;
+import com.compass.portalcompass.feignclients.request.StatusEmail;
 import com.compass.portalcompass.feignclients.response.Email;
 import com.compass.portalcompass.repositories.EstagiarioRepositorio;
 import com.compass.portalcompass.repositories.EstagiarioSprintRepositorio;
@@ -139,9 +141,16 @@ public class EstagiarioServiceImp implements EstagiarioService {
 		
 		Set<Tema> temasReforco = vinculo.getTemasReforco();
 		
-		form.getIdsTemasReforco().forEach(idTema -> {
-			temasReforco.add(temaRepositorio.getById(idTema));
-		});
+		if(form.getIdsTemasReforco() != null)
+			form.getIdsTemasReforco().forEach(idTema -> {
+				temasReforco.add(temaRepositorio.getById(idTema));
+			});
+		
+		//Envia email para o estagiário. Contendo as informações referentes a esta sprint (notas e temas de reforço).
+		//Se o email não existir, der falha na conexão ou algum outro motivo de exceção, o envio não ocorre e aplicação segue.
+		try {
+			sendEmail(new EmailDTO(vinculo));
+		}catch(Exception e) {}
 		
 		return mapper.map(vinculoRepositorio.save(vinculo), EstagiarioSprintDTO.class);
 	}
