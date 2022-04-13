@@ -1,5 +1,24 @@
-{"properties": [{
-  "name": "spring.jpa.format-sql",
+{"properties": [
+  {
+    "name": "portalcompass.jwt.expiration",
+    "type": "java.lang.String",
+    "description": "A description for 'portalcompass.jwt.expiration'"
+  },
+  {
+    "name": "portalcompass.jwt.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'portalcompass.jwt.secret'"
+  },
+  {
+	  "name": "spring.jpa.format-sql",
   "type": "java.lang.String",
   "description": "A description for 'spring.jpa.format-sql'"
-}]}
+  }  
+]}
+  
+  
+
+
+
+
+
