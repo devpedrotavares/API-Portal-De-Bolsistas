@@ -46,7 +46,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
-		.antMatchers(HttpMethod.GET, "/estagiarios/*/**").hasAnyRole("BOLSISTA","ADMIN")
+		.antMatchers(HttpMethod.GET, "/estagiarios/*/**").hasAnyRole("ESTAGIARIO","ADMIN")
 		.anyRequest().hasRole("ADMIN")
 		.and().csrf().disable()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
