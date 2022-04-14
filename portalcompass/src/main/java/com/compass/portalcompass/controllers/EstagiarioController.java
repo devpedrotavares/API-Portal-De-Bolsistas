@@ -1,5 +1,7 @@
 package com.compass.portalcompass.controllers;
 
+import java.security.Principal;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -9,6 +11,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,14 +39,12 @@ public class EstagiarioController {
 
 	@Autowired
 	private EstagiarioService service;
-	
-	
 
 	// Retorna todos os estagiários. Obs.: tem parâmetro opcional para buscar pelo
 	// tipo da bolsa
-	
+
 	@GetMapping
-	@Cacheable (value = "listaTodosOsEstagiarios")
+	@Cacheable(value = "listaTodosOsEstagiarios")
 	public Page<EstagiarioDTO> findAll(@RequestParam(defaultValue = "10") int size,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(required = false) String sort,
 			@RequestParam(required = false) TipoBolsa tipoBolsa) {
@@ -52,28 +54,42 @@ public class EstagiarioController {
 	}
 
 	@GetMapping(value = "/{id}")
-	@Cacheable (value = "listaOsEstagiariosPorId")
-
-	public ResponseEntity<EstagiarioDTO> findById(@PathVariable Long id) {
+	@Cacheable(value = "listaOsEstagiariosPorId")
+	public ResponseEntity<EstagiarioDTO> findById(@PathVariable Long id, Principal principal) {
 		EstagiarioDTO estagiario = service.findById(id);
+
+		// Valida usuário. Obs.: só permite se o usuário (bolsita) estiver consultando informações suas. Ou se for admin.
+		UsernamePasswordAuthenticationToken upat = (UsernamePasswordAuthenticationToken) principal;
+		if (estagiario.getEmail().equals(principal.getName()) == false
+				&& (upat.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")) == false))
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
 		return ResponseEntity.ok(estagiario);
 	}
 
 	@GetMapping(value = "/{idEstagiario}/sprint/{idSprint}")
 	public ResponseEntity<EstagiarioSprintDTO> getEstagiarioSprint(@PathVariable Long idEstagiario,
-			@PathVariable Long idSprint) {
+			@PathVariable Long idSprint, Principal principal) {
+		// Valida usuário. Obs.: só permite se o usuário (bolsita) estiver consultando informações suas. Ou se for admin.
+		EstagiarioDTO estagiario = service.findById(idEstagiario);
+		UsernamePasswordAuthenticationToken upat = (UsernamePasswordAuthenticationToken) principal;
+		if (estagiario.getEmail().equals(principal.getName()) == false
+				&& (upat.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")) == false))
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
 		EstagiarioSprintDTO infos = service.getEstagiarioSprint(idEstagiario, idSprint);
+
 		return ResponseEntity.ok(infos);
 	}
 
 	@PostMapping
 	@Transactional
-	@CacheEvict (value = "listaTodosOsEstagiarios", allEntries = true )
+	@CacheEvict(value = "listaTodosOsEstagiarios", allEntries = true)
 	public ResponseEntity<EstagiarioDTO> insert(@RequestBody @Valid EstagiarioFormDTO estagiarioBody) {
 		EstagiarioDTO estagiario = service.insert(estagiarioBody);
 		return ResponseEntity.status(HttpStatus.CREATED).body(estagiario);
 	}
-	
+
 	@PostMapping(value = "/emails")
 	@Transactional
 	public ResponseEntity<Email> sendEmail(@RequestBody EmailDTO emailBody) {
@@ -92,7 +108,7 @@ public class EstagiarioController {
 
 	@PutMapping(value = "/{id}")
 	@Transactional
-	@CacheEvict (value = "listaTodosOsEstagiarios", allEntries = true )
+	@CacheEvict(value = "listaTodosOsEstagiarios", allEntries = true)
 	public ResponseEntity<EstagiarioDTO> update(@PathVariable Long id,
 			@RequestBody @Valid EstagiarioFormDTO estagiarioBody) {
 		EstagiarioDTO estagiario = service.update(id, estagiarioBody);
@@ -107,7 +123,7 @@ public class EstagiarioController {
 
 	@DeleteMapping(value = "/{id}")
 	@Transactional
-	@CacheEvict (value = "listaTodosOsEstagiarios", allEntries = true )
+	@CacheEvict(value = "listaTodosOsEstagiarios", allEntries = true)
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();

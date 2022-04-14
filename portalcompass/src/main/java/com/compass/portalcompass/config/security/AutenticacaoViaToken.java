@@ -2,7 +2,6 @@ package com.compass.portalcompass.config.security;
 
 import java.io.IOException;
 
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,17 +11,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.compass.portalcompass.entities.Instrutor;
-import com.compass.portalcompass.repositories.InstrutorRepositorio;
+import com.compass.portalcompass.entities.Usuario;
+import com.compass.portalcompass.repositories.UsuarioRepositorio;
 
 public class AutenticacaoViaToken extends OncePerRequestFilter {
 
 	private TokenService tokenService;
-	private InstrutorRepositorio instrutorRepositorio;
+	private UsuarioRepositorio usuarioRepositorio;
 
-	public AutenticacaoViaToken(TokenService tokenService, InstrutorRepositorio instrutorRepositorio) {
+	public AutenticacaoViaToken(TokenService tokenService, UsuarioRepositorio usuarioRepositorio) {
 		this.tokenService = tokenService;
-		this.instrutorRepositorio = instrutorRepositorio;
+		this.usuarioRepositorio = usuarioRepositorio;
 	}
 
 	@Override
@@ -39,11 +38,11 @@ public class AutenticacaoViaToken extends OncePerRequestFilter {
 	}
 
 	private void autenticarInstrutor(String token) {
-		Long idInstrutor = tokenService.getIdInstrutor(token);
-		Instrutor instrutor = instrutorRepositorio.findById(idInstrutor).get();
+		Long idUsuario = tokenService.getIdUsuario(token);
+		Usuario usuario = usuarioRepositorio.findById(idUsuario).get();
 		
 		UsernamePasswordAuthenticationToken authentication = 
-				new UsernamePasswordAuthenticationToken(instrutor, null, instrutor.getAuthorities());
+				new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 
