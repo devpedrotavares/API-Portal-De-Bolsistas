@@ -8,20 +8,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.compass.portalcompass.entities.Instrutor;
-import com.compass.portalcompass.repositories.InstrutorRepositorio;
+import com.compass.portalcompass.entities.Usuario;
+import com.compass.portalcompass.repositories.UsuarioRepositorio;
 
 @Service
 public class AutenticacaoService implements UserDetailsService {
 
 	@Autowired
-	private InstrutorRepositorio instrutorRepositorio;
+	private UsuarioRepositorio usuarioRepositorio;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<Instrutor> instrutor = instrutorRepositorio.findByEmail(username);
-		if(instrutor.isPresent()) {
-			return instrutor.get();
+		Optional<Usuario> usuario = usuarioRepositorio.findByEmail(username);
+		if(usuario.isPresent()) {
+			return usuario.get();
 		}
 		throw new UsernameNotFoundException("Dados inválidos!");
 	}

@@ -28,7 +28,6 @@ import com.compass.portalcompass.dto.EstagiarioFormDTO;
 import com.compass.portalcompass.dto.EstagiarioSprintDTO;
 import com.compass.portalcompass.dto.VinculoEstagiarioSprintForm;
 import com.compass.portalcompass.dto.VinculoInfosForm;
-import com.compass.portalcompass.entities.Instrutor;
 import com.compass.portalcompass.enums.TipoBolsa;
 import com.compass.portalcompass.feignclients.request.EmailDTO;
 import com.compass.portalcompass.feignclients.response.Email;

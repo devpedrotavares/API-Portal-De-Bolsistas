@@ -14,7 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.compass.portalcompass.repositories.InstrutorRepositorio;
+import com.compass.portalcompass.repositories.UsuarioRepositorio;
 
 @EnableWebSecurity
 @Configuration
@@ -27,7 +27,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	private TokenService tokenService;
 	
 	@Autowired
-	private InstrutorRepositorio instrutorRepositorio;
+	private UsuarioRepositorio usuarioRepositorio;
 	
 	@Override
 	@Bean
@@ -50,7 +50,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 		.anyRequest().hasRole("ADMIN")
 		.and().csrf().disable()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and().addFilterBefore(new AutenticacaoViaToken(this.tokenService, this.instrutorRepositorio), UsernamePasswordAuthenticationFilter.class);
+		.and().addFilterBefore(new AutenticacaoViaToken(this.tokenService, this.usuarioRepositorio), UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	//Recursos Estáticos(imagens, css, javaScript e etc)

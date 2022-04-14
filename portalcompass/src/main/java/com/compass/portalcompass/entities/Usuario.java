@@ -18,7 +18,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Instrutor implements UserDetails{
+public class Usuario implements UserDetails{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
