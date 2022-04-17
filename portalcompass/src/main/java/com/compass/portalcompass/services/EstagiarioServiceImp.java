@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.compass.portalcompass.dto.EstagiarioDTO;
@@ -30,7 +29,6 @@ import com.compass.portalcompass.exception.BancoDeDadosExcecao;
 import com.compass.portalcompass.exception.NaoEncontradoExcecao;
 import com.compass.portalcompass.feignclients.EmailFeignClient;
 import com.compass.portalcompass.feignclients.request.EmailDTO;
-import com.compass.portalcompass.feignclients.request.StatusEmail;
 import com.compass.portalcompass.feignclients.response.Email;
 import com.compass.portalcompass.repositories.EstagiarioRepositorio;
 import com.compass.portalcompass.repositories.EstagiarioSprintRepositorio;

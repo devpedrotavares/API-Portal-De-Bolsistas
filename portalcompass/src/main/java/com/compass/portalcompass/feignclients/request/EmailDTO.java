@@ -1,12 +1,9 @@
 package com.compass.portalcompass.feignclients.request;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import com.compass.portalcompass.entities.Estagiario;
 import com.compass.portalcompass.entities.EstagiarioSprint;
-import com.compass.portalcompass.entities.Tema;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
