@@ -125,7 +125,7 @@ public class EstagiarioServiceImp implements EstagiarioService {
 	@Override
 	public EstagiarioSprintDTO getEstagiarioSprint(Long idEstagiario, Long idSprint) {
 		EstagiarioSprintId id = new EstagiarioSprintId(idEstagiario, idSprint);
-		EstagiarioSprint vinculo = vinculoRepositorio.getById(id);
+		EstagiarioSprint vinculo = vinculoRepositorio.findById(id).orElseThrow(() -> new NaoEncontradoExcecao(id));
 		return mapper.map(vinculo, EstagiarioSprintDTO.class);
 	}
 
@@ -133,7 +133,7 @@ public class EstagiarioServiceImp implements EstagiarioService {
 	@Override
 	public EstagiarioSprintDTO cadastrarInfos(Long idEstagiario, Long idSprint, VinculoInfosForm form) {
 		EstagiarioSprintId id = new EstagiarioSprintId(idEstagiario, idSprint);
-		EstagiarioSprint vinculo = vinculoRepositorio.getById(id);
+		EstagiarioSprint vinculo = vinculoRepositorio.findById(id).orElseThrow(() -> new NaoEncontradoExcecao(id));
 		vinculo.setNotaTecnica(form.getNotaTecnica());
 		vinculo.setNotaComportamental(form.getNotaComportamental());
 		

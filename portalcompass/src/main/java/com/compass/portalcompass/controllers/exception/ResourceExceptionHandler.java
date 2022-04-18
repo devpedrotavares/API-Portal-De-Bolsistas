@@ -33,7 +33,7 @@ public class ResourceExceptionHandler {
 				request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
-	
+
 	@ExceptionHandler(EntityNotFoundException.class)
 	public ResponseEntity<StandardError> handle(EntityNotFoundException e, HttpServletRequest request) {
 		String error = "Entity not found";
@@ -93,11 +93,10 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandardError> handle(ConstraintViolationException e, HttpServletRequest request) {
 		ConstraintViolation<?> cv = e.getConstraintViolations().iterator().next();
 		String message = String.format("A propriedade '%s' %s", cv.getPropertyPath(), cv.getMessage());
-		
+
 		String error = "Constraint Violation";
 		HttpStatus status = HttpStatus.BAD_REQUEST;
-		StandardError err = new StandardError(Instant.now(), status.value(), error, message,
-				request.getRequestURI());
+		StandardError err = new StandardError(Instant.now(), status.value(), error, message, request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
 
@@ -109,7 +108,7 @@ public class ResourceExceptionHandler {
 				request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
-	
+
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<StandardError> handle(DataIntegrityViolationException e, HttpServletRequest request) {
 		String msg = e.getCause().getLocalizedMessage() + ". Verif ";
@@ -118,6 +117,24 @@ public class ResourceExceptionHandler {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getCause().getLocalizedMessage(),
 				request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+
+	@ExceptionHandler(NullPointerException.class)
+	public ResponseEntity<StandardError> handle(NullPointerException e, HttpServletRequest request) {
+		String msg = e.getMessage();
+		String error = "Null Pointer Exception";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, msg, request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<StandardError> handle(IllegalArgumentException e, HttpServletRequest request) {
+		String msg = e.getMessage();
+		String error = "Illegal Argument Exception";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, msg, request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
 }
