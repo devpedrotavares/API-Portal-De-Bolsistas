@@ -1,10 +1,6 @@
 package com.compass.portalcompass.dto;
 
-import java.util.List;
-
-import com.compass.portalcompass.entities.EstagiarioSprint;
-import com.compass.portalcompass.entities.Tema;
-import com.compass.portalcompass.enums.TipoBolsa;
+import com.compass.portalcompass.entities.MaterialDeEstudo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +9,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MaterialDeEstudoDTO {
 	private Long id;
+	
+	private String nome;
 	private String url;
-	private Tema tema;
+	private TemaDTO tema;
+
+	public MaterialDeEstudoDTO(MaterialDeEstudo mat) {
+		this.id = mat.getId();
+		this.nome = mat.getNome();
+		this.url = mat.getUrl();
+		this.tema = new TemaDTO(mat.getTema());
+	}
+
 }
