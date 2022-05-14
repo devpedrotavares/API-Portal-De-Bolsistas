@@ -131,8 +131,8 @@ class EstagiarioServiceImpTest {
 		vinculo.setSprint(getSprint());
 		vinculo.setNotaTecnica(new BigDecimal("9.5"));
 
-		Mockito.when(this.vinculoRepositorio.getById(new EstagiarioSprintId(Long.valueOf(1), Long.valueOf(1))))
-				.thenReturn(vinculo);
+		Mockito.when(this.vinculoRepositorio.findById(new EstagiarioSprintId(Long.valueOf(1), Long.valueOf(1))))
+		.thenReturn(Optional.of(vinculo));
 
 		EstagiarioSprintDTO retornado = this.estagiarioService.getEstagiarioSprint(Long.valueOf(1), Long.valueOf(1));
 
@@ -152,8 +152,8 @@ class EstagiarioServiceImpTest {
 		VinculoInfosForm form = new VinculoInfosForm(new BigDecimal("9.5"), new BigDecimal("9.2"),
 				new ArrayList<Long>());
 
-		Mockito.when(this.vinculoRepositorio.getById(new EstagiarioSprintId(Long.valueOf(1), Long.valueOf(1))))
-				.thenReturn(vinculo);
+		Mockito.when(this.vinculoRepositorio.findById(new EstagiarioSprintId(Long.valueOf(1), Long.valueOf(1))))
+				.thenReturn(Optional.of(vinculo));
 		Mockito.when(this.vinculoRepositorio.save(Mockito.any(EstagiarioSprint.class))).then(returnsFirstArg());
 
 		EstagiarioSprintDTO retornado = this.estagiarioService.cadastrarInfos(Long.valueOf(1), Long.valueOf(1), form);
