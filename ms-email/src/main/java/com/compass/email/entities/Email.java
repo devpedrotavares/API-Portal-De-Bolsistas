@@ -3,6 +3,7 @@ package com.compass.email.entities;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,9 +30,9 @@ public class Email implements Serializable {
 	private String emailFrom;
 	private String emailTo;
 	private String subject;
+	@Column(columnDefinition = "TEXT")
 	private String text;
 	private LocalDateTime sendDateEmail;
 	@Enumerated(EnumType.STRING)
 	private StatusEmail statusEmail;
-
 }

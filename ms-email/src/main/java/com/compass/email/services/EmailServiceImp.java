@@ -16,7 +16,6 @@ import com.compass.email.repositories.EmailRepository;
 @Service
 public class EmailServiceImp implements EmailService {
 
-	
 	@Autowired
 	private EmailRepository emailRepository;
 	
