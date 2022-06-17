@@ -1,6 +1,5 @@
 package com.compass.email.controllers;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
@@ -24,7 +23,6 @@ public class EmailController {
 	private EmailService emailService;
 	
 	@PostMapping
-	@Transactional
 	public ResponseEntity<Email> sendEmail(@RequestBody @Valid EmailDTO emailDTO) {
 		Email email = new Email();
 		BeanUtils.copyProperties(emailDTO, email);
