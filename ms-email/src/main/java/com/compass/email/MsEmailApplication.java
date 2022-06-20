@@ -6,7 +6,7 @@ import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @EnableEurekaClient
-@LoadBalancerClient(name = "portalcompass")
+//@LoadBalancerClient(name = "portalcompass")
 @SpringBootApplication
 public class MsEmailApplication {
 

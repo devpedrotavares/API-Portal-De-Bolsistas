@@ -12,7 +12,7 @@ import com.compass.portalcompass.feignclients.response.Email;
 
 
 @Component
-@FeignClient(name = "email", url = "localhost:8081", path = "/")
+@FeignClient(name = "email", path = "/")
 public interface EmailFeignClient {
 
 	@PostMapping(value = "emails")
